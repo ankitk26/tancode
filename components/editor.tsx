@@ -72,7 +72,7 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 					wordWrap: wrap ? "on" : "off",
 					lineNumbers: showLineNumbers ? "on" : "off",
 					scrollBeyondLastLine: false,
-					minimap: { enabled: false },
+					minimap: { enabled: true },
 					automaticLayout: true,
 				}}
 			/>
