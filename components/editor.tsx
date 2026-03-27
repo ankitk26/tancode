@@ -1,34 +1,7 @@
-import AceEditor from "react-ace";
+import Editor from "@monaco-editor/react";
 import { useEditor } from "./app-provider";
-
-// Import themes
-import "ace-builds/src-noconflict/theme-cobalt";
-import "ace-builds/src-noconflict/theme-dracula";
-import "ace-builds/src-noconflict/theme-monokai";
-import "ace-builds/src-noconflict/theme-nord_dark";
-import "ace-builds/src-noconflict/theme-one_dark";
-import "ace-builds/src-noconflict/theme-tomorrow_night";
-import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
-import "ace-builds/src-noconflict/theme-tomorrow_night_eighties";
-import "ace-builds/src-noconflict/theme-vibrant_ink";
-
-// Import languages
-import "ace-builds/src-noconflict/mode-c_cpp";
-import "ace-builds/src-noconflict/mode-csharp";
-import "ace-builds/src-noconflict/mode-css";
-import "ace-builds/src-noconflict/mode-elixir";
-import "ace-builds/src-noconflict/mode-golang";
-import "ace-builds/src-noconflict/mode-html";
-import "ace-builds/src-noconflict/mode-java";
-import "ace-builds/src-noconflict/mode-javascript";
-import "ace-builds/src-noconflict/mode-python";
-import "ace-builds/src-noconflict/mode-rust";
-import "ace-builds/src-noconflict/mode-typescript";
-
-// Additonal editor settings tools
 import { supportedLanguages } from "@/lib/supported-languages";
 import { SupportedLanguage } from "@/lib/types";
-import "ace-builds/src-noconflict/ext-language_tools";
 
 type Props = {
 	language: string;
@@ -36,36 +9,42 @@ type Props = {
 	setCode: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export default function Editor({ language, code, setCode }: Props) {
+// Map Ace themes to Monaco themes
+const themeMap: Record<string, string> = {
+	cobalt: "vs-dark",
+	dracula: "vs-dark",
+	monokai: "vs-dark",
+	nord_dark: "vs-dark",
+	one_dark: "vs-dark",
+	tomorrow_night: "vs-dark",
+	tomorrow_night_blue: "vs-dark",
+	tomorrow_night_eighties: "vs-dark",
+	vibrant_ink: "vs-dark",
+};
+
+export default function CodeEditor({ language, code, setCode }: Props) {
 	const { theme, fontFamily, fontSize, wrap, showLineNumbers } = useEditor();
+
+	const monacoTheme = themeMap[theme] || "vs-dark";
+	const monacoLanguage =
+		supportedLanguages[language as SupportedLanguage]?.monacoLanguage ||
+		language;
 
 	return (
 		<div className="flex flex-col items-center grow h-full">
-			{/* Actual Editor */}
-			<AceEditor
-				mode={
-					supportedLanguages[language as SupportedLanguage]
-						.aceEditorMode
-				}
-				theme={theme}
-				fontSize={fontSize}
+			<Editor
+				language={monacoLanguage}
 				value={code}
-				onChange={(value) => setCode(value)}
-				name={`${language}_editor`}
-				style={{
-					width: "100%",
-					height: "100%",
-				}}
-				editorProps={{ $blockScrolling: true }}
-				setOptions={{
-					enableBasicAutocompletion: true,
-					enableLiveAutocompletion: true,
-					fontFamily,
-					wrap,
-					autoScrollEditorIntoView: true,
-					showLineNumbers,
-					fixedWidthGutter: true,
-					showPrintMargin: false,
+				theme={monacoTheme}
+				onChange={(value) => setCode(value || "")}
+				options={{
+					fontSize: fontSize,
+					fontFamily: fontFamily,
+					wordWrap: wrap ? "on" : "off",
+					lineNumbers: showLineNumbers ? "on" : "off",
+					scrollBeyondLastLine: false,
+					minimap: { enabled: false },
+					automaticLayout: true,
 				}}
 			/>
 		</div>
