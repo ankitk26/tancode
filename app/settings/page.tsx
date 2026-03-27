@@ -26,6 +26,8 @@ export default function Settings() {
 		setShowLineNumbers,
 		minimap,
 		setMinimap,
+		vimMode,
+		setVimMode,
 	} = useEditor();
 
 	return (
@@ -126,6 +128,16 @@ export default function Settings() {
 						id="app-minimap"
 						checked={minimap}
 						onCheckedChange={(checked) => setMinimap(checked)}
+					/>
+				</div>
+
+				{/* Vim Mode setting */}
+				<div className="flex items-center gap-4">
+					<Label htmlFor="app-vim-mode">Vim Mode</Label>
+					<Switch
+						id="app-vim-mode"
+						checked={vimMode}
+						onCheckedChange={(checked) => setVimMode(checked)}
 					/>
 				</div>
 			</div>

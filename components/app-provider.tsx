@@ -43,6 +43,8 @@ type AppState = {
 	setHeadTags: React.Dispatch<React.SetStateAction<string>>;
 	cssFramework: string;
 	setCssFramework: React.Dispatch<React.SetStateAction<string>>;
+	vimMode: boolean;
+	setVimMode: (value: boolean) => void;
 };
 
 const STORAGE_KEY = "next-pen-settings";
@@ -57,6 +59,7 @@ const defaultSettings = {
 	minimap: true,
 	alignment: "right",
 	language: "cpp17",
+	vimMode: false,
 };
 
 function getStoredSettings() {
@@ -135,6 +138,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 		setMinimapState(stored.minimap);
 		setAlignmentState(stored.alignment);
 		setLanguageState(stored.language);
+		setVimModeState(stored.vimMode);
 		setIsLoaded(true);
 	}, []);
 
@@ -202,6 +206,11 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 		saveSetting("language", value);
 	}, []);
 
+	const setVimMode = useCallback((value: boolean) => {
+		setVimModeState(value);
+		saveSetting("vimMode", value);
+	}, []);
+
 	const [code, setCode] = useState(
 		(supportedLanguages[
 			defaultSettings.language as keyof typeof supportedLanguages
@@ -225,6 +234,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [headTags, setHeadTags] = useState("");
 	const [cssFramework, setCssFramework] = useState("none");
+	const [vimModeState, setVimModeState] = useState(defaultSettings.vimMode);
 
 	const getBoilerplateCode = (lang: string) => {
 		return supportedLanguages[lang as keyof typeof supportedLanguages]
@@ -264,6 +274,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 				setHeadTags,
 				cssFramework,
 				setCssFramework,
+				vimMode: vimModeState,
+				setVimMode,
 				getBoilerplateCode,
 			}}
 		>
