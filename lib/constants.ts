@@ -7,16 +7,15 @@ const themesList = [
 export const themes = themesList;
 
 const fontsList = [
-	"Consolas",
-	"Jetbrains Mono",
-	"Cascadia Code",
-	"Geist Mono",
-	"Fira Code",
-	"Menlo",
-	"Courier",
-	"Inconsolata",
+	{ value: "var(--font-jetbrains)", label: "JetBrains Mono" },
+	{ value: "var(--font-geist)", label: "Geist Mono" },
+	{ value: "var(--font-fira)", label: "Fira Code" },
+	{ value: "var(--font-source)", label: "Source Code Pro" },
+	{ value: "Lilex Variable", label: "Lilex" },
+	{ value: "var(--font-courier)", label: "Courier Prime" },
+	{ value: "monospace", label: "System Default" },
 ];
-export const fonts = fontsList.map((font) => ({ value: font, label: font }));
+export const fonts = fontsList;
 
 export const htmlPreview =
 	'<h1 class="heading1">Heading tag</h1>\n<p>Paragraph tag</p>\n\n<ol id="list1">\n\t<li>Item1</li>\n\t<li>Item 2</li>\n\t<li>Item 3</li>\n</ol>';

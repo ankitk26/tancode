@@ -38,7 +38,7 @@ export const AppContext = createContext<AppState>({} as AppState);
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 	const [theme, setTheme] = useState("vs-dark");
-	const [fontFamily, setFontFamily] = useState("JetBrains Mono");
+	const [fontFamily, setFontFamily] = useState("var(--font-jetbrains)");
 	const [fontSize, setFontSize] = useState(14);
 	const [wrap, setWrap] = useState(true);
 	const [showLineNumbers, setShowLineNumbers] = useState(true);
