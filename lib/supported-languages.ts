@@ -4,6 +4,7 @@ export const compilerLanguages = {
 		label: "C++",
 		jdoodleVersionIndex: "2",
 		aceEditorMode: "c_cpp",
+		monacoLanguage: "cpp",
 		boilerplate:
 			'#include <iostream>\n\nint main() {\n    std::cout << "coding with C++" << std::endl;\n    return 0;\n}',
 	},
@@ -12,6 +13,7 @@ export const compilerLanguages = {
 		label: "C",
 		jdoodleVersionIndex: "6",
 		aceEditorMode: "c_cpp",
+		monacoLanguage: "c",
 		boilerplate:
 			'#include <stdio.h>\n\nint main() {\n    printf("coding with C\\n");\n    return 0;\n}',
 	},
@@ -20,6 +22,7 @@ export const compilerLanguages = {
 		label: "Java",
 		jdoodleVersionIndex: "5",
 		aceEditorMode: "java",
+		monacoLanguage: "java",
 		boilerplate:
 			'public class Main {\n    public static void main(String[] args) {\n        System.out.println("coding with Java");\n    }\n}',
 	},
@@ -28,6 +31,7 @@ export const compilerLanguages = {
 		label: "Python",
 		jdoodleVersionIndex: "5",
 		aceEditorMode: "python",
+		monacoLanguage: "python",
 		boilerplate: 'print("coding with Python")',
 	},
 	rust: {
@@ -35,6 +39,7 @@ export const compilerLanguages = {
 		label: "Rust",
 		jdoodleVersionIndex: "5",
 		aceEditorMode: "rust",
+		monacoLanguage: "rust",
 		boilerplate: 'fn main() {\n    println!("coding with Rust");\n}',
 	},
 	go: {
@@ -42,6 +47,7 @@ export const compilerLanguages = {
 		label: "Go",
 		jdoodleVersionIndex: "5",
 		aceEditorMode: "golang",
+		monacoLanguage: "go",
 		boilerplate:
 			'package main\n\nimport "fmt"\n\nfunc main() {\n    fmt.Println("coding with Go")\n}',
 	},
@@ -50,6 +56,7 @@ export const compilerLanguages = {
 		label: "JavaScript",
 		jdoodleVersionIndex: "6",
 		aceEditorMode: "javascript",
+		monacoLanguage: "javascript",
 		boilerplate: 'console.log("coding with JavaScript");',
 	},
 	typescript: {
@@ -57,6 +64,7 @@ export const compilerLanguages = {
 		label: "TypeScript",
 		jdoodleVersionIndex: "0",
 		aceEditorMode: "typescript",
+		monacoLanguage: "typescript",
 		boilerplate: 'console.log("coding with TypeScript");',
 	},
 	csharp: {
@@ -64,6 +72,7 @@ export const compilerLanguages = {
 		label: "C#",
 		jdoodleVersionIndex: "5",
 		aceEditorMode: "csharp",
+		monacoLanguage: "csharp",
 		boilerplate:
 			'using System;\n\nclass Program {\n    static void Main() {\n        Console.WriteLine("coding with C#");\n    }\n}',
 	},
@@ -72,13 +81,14 @@ export const compilerLanguages = {
 		label: "Elixir",
 		jdoodleVersionIndex: "5",
 		aceEditorMode: "elixir",
+		monacoLanguage: "elixir",
 		boilerplate: 'IO.puts("coding with Elixir")',
 	},
 } as const;
 
 export const editorOnlyLanguages = {
-	html: { aceEditorMode: "html", boilerplate: "" },
-	css: { aceEditorMode: "css", boilerplate: "" },
+	html: { aceEditorMode: "html", monacoLanguage: "html", boilerplate: "" },
+	css: { aceEditorMode: "css", monacoLanguage: "css", boilerplate: "" },
 };
 
 export const supportedLanguages = {
