@@ -1,18 +1,30 @@
-const themesList = [
-	{ value: "vs", label: "Light" },
-	{ value: "vs-dark", label: "Dark" },
-	{ value: "hc-black", label: "High Contrast Dark" },
-	{ value: "hc-light", label: "High Contrast Light" },
-];
-export const themes = themesList;
-
-// Shiki themes for Monaco Editor
+// Shiki themes for Monaco Editor (dark and light variants)
 export const shikiThemes = [
+	// Vitesse
 	{ value: "vitesse-dark", label: "Vitesse Dark" },
+	{ value: "vitesse-light", label: "Vitesse Light" },
+	// Rose Pine
+	{ value: "rose-pine", label: "Rose Pine" },
+	{ value: "rose-pine-dawn", label: "Rose Pine Dawn" },
+	// Tokyo Night
+	{ value: "tokyo-night", label: "Tokyo Night" },
+	// GitHub
 	{ value: "github-dark", label: "GitHub Dark" },
+	{ value: "github-light", label: "GitHub Light" },
+	// Vesper
+	{ value: "vesper", label: "Vesper" },
+	// Poimandres
+	{ value: "poimandres", label: "Poimandres" },
+	// Catppuccin
 	{ value: "catppuccin-mocha", label: "Catppuccin Mocha" },
-	{ value: "dracula", label: "Dracula" },
-	{ value: "nord", label: "Nord" },
+	{ value: "catppuccin-latte", label: "Catppuccin Latte" },
+	// VS Code
+	{ value: "dark-plus", label: "VS Code Dark+" },
+	{ value: "light-plus", label: "VS Code Light+" },
+	// Night Owl
+	{ value: "night-owl", label: "Night Owl" },
+	// One Dark
+	{ value: "one-dark-pro", label: "One Dark Pro" },
 ];
 
 // Valid theme values for validation
