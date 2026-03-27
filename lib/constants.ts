@@ -6,6 +6,18 @@ const themesList = [
 ];
 export const themes = themesList;
 
+// Shiki themes for Monaco Editor
+export const shikiThemes = [
+	{ value: "vitesse-dark", label: "Vitesse Dark" },
+	{ value: "github-dark", label: "GitHub Dark" },
+	{ value: "catppuccin-mocha", label: "Catppuccin Mocha" },
+	{ value: "dracula", label: "Dracula" },
+	{ value: "nord", label: "Nord" },
+];
+
+// Valid theme values for validation
+export const validThemeValues = shikiThemes.map((t) => t.value);
+
 const fontsList = [
 	{ value: "var(--font-jetbrains)", label: "JetBrains Mono" },
 	{ value: "var(--font-geist)", label: "Geist Mono" },

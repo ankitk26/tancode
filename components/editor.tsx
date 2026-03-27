@@ -1,7 +1,11 @@
-import Editor from "@monaco-editor/react";
+import Editor, { useMonaco } from "@monaco-editor/react";
 import { useEditor } from "./app-provider";
 import { supportedLanguages } from "@/lib/supported-languages";
 import { SupportedLanguage } from "@/lib/types";
+import { shikiToMonaco } from "@shikijs/monaco";
+import { createHighlighter } from "shiki";
+import { useEffect } from "react";
+import { shikiThemes } from "@/lib/constants";
 
 type Props = {
 	language: string;
@@ -9,22 +13,48 @@ type Props = {
 	setCode: React.Dispatch<React.SetStateAction<string>>;
 };
 
-// Monaco built-in themes: vs (light), vs-dark, hc-black, hc-light
+// Singleton highlighter instance
+const highlighterPromise = createHighlighter({
+	themes: shikiThemes.map((t: { value: string; label: string }) => t.value),
+	langs: [
+		"javascript",
+		"typescript",
+		"python",
+		"rust",
+		"go",
+		"java",
+		"cpp",
+		"c",
+		"html",
+		"css",
+		"csharp",
+		"elixir",
+	],
+});
 
 export default function CodeEditor({ language, code, setCode }: Props) {
+	const monaco = useMonaco();
 	const { theme, fontFamily, fontSize, wrap, showLineNumbers } = useEditor();
 
-	const monacoTheme = theme || "vs-dark";
 	const monacoLanguage =
 		supportedLanguages[language as SupportedLanguage]?.monacoLanguage ||
 		language;
+
+	useEffect(() => {
+		if (!monaco) return;
+
+		// Register Shiki themes with Monaco
+		highlighterPromise.then((highlighter) => {
+			shikiToMonaco(highlighter, monaco);
+		});
+	}, [monaco]);
 
 	return (
 		<div className="flex flex-col items-center grow h-full border border-border">
 			<Editor
 				language={monacoLanguage}
 				value={code}
-				theme={monacoTheme}
+				theme={theme}
 				onChange={(value) => setCode(value || "")}
 				options={{
 					fontSize: fontSize,

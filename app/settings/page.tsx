@@ -12,7 +12,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { fonts, themes } from "@/lib/constants";
+import { fonts, shikiThemes } from "@/lib/constants";
 
 export default function Settings() {
 	const {
@@ -42,7 +42,7 @@ export default function Settings() {
 					<Label htmlFor="app-theme">Theme</Label>
 
 					<Select
-						items={themes}
+						items={shikiThemes}
 						id="app-theme"
 						value={theme}
 						onValueChange={(updatedTheme) =>
@@ -53,7 +53,7 @@ export default function Settings() {
 							<SelectValue placeholder="Select theme" />
 						</SelectTrigger>
 						<SelectContent>
-							{themes.map((theme) => (
+							{shikiThemes.map((theme) => (
 								<SelectItem
 									key={theme.value}
 									value={theme.value}
