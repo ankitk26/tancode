@@ -48,7 +48,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 			lang="en"
 			className={`${jetbrainsMono.variable} ${firaCode.variable} ${sourceCodePro.variable} ${geistMono.variable} ${courierPrime.variable}`}
 		>
-			<body className={`antialiased ${geistMono.className}`}>
+			<body className={`antialiased ${jetbrainsMono.className}`}>
 				<TooltipProvider>
 					<AppProvider>
 						<div className="flex w-full flex-col h-screen overflow-hidden">
