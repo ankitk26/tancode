@@ -8,8 +8,14 @@ A simple online code editor where you can write and run code in a few programmin
 
 - C
 - C++
+- C#
 - Java
 - Python
+- JavaScript (Node.js)
+- TypeScript
+- Go
+- Rust
+- Elixir
 
 ### HTML/CSS Playground
 
@@ -21,7 +27,8 @@ A simple online code editor where you can write and run code in a few programmin
 - Syntax highlighting
 - Multiple color themes
 - Adjustable font size and font family
-- Toggle line numbers and code wrapping
+- Toggle line numbers, code wrapping, and minimap
+- Vim mode support
 - Input and output panels for programs
 
 ## Tech Stack
@@ -32,6 +39,7 @@ A simple online code editor where you can write and run code in a few programmin
 - Tailwind CSS
 - shadcn/ui
 - Monaco Editor (@monaco-editor/react)
+- Zustand (state management)
 
 ## Installation
 
