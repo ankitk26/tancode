@@ -53,15 +53,9 @@ export default function ProgrammingEditor() {
 
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
-			if (
-				!event.ctrlKey ||
-				event.shiftKey ||
-				event.altKey ||
-				event.metaKey
-			)
-				return;
-			if (event.key.toLowerCase() !== "r" && event.code !== "KeyR")
-				return;
+			if (!event.metaKey && !event.ctrlKey) return;
+			if (event.shiftKey || event.altKey) return;
+			if (event.key !== "Enter" && event.code !== "Enter") return;
 
 			event.preventDefault();
 			event.stopPropagation();
