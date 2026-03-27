@@ -2,6 +2,7 @@
 
 import { SubmissionOutput } from "@/lib/types";
 import { supportedLanguages } from "@/lib/supported-languages";
+import { validThemeValues } from "@/lib/constants";
 import { createContext, useContext, useState, useCallback } from "react";
 
 type AppState = {
@@ -37,7 +38,7 @@ type AppState = {
 const STORAGE_KEY = "next-pen-settings";
 
 const defaultSettings = {
-	theme: "vs-dark",
+	theme: "vitesse-dark",
 	fontFamily: "var(--font-jetbrains)",
 	fontSize: 14,
 	wrap: true,
@@ -51,7 +52,12 @@ function getStoredSettings() {
 	try {
 		const stored = localStorage.getItem(STORAGE_KEY);
 		if (stored) {
-			return { ...defaultSettings, ...JSON.parse(stored) };
+			const parsed = JSON.parse(stored);
+			// Validate theme - fallback to default if invalid
+			const theme = validThemeValues.includes(parsed.theme)
+				? parsed.theme
+				: defaultSettings.theme;
+			return { ...defaultSettings, ...parsed, theme };
 		}
 	} catch {
 		// Fallback to defaults if parsing fails
