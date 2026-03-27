@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "@fontsource-variable/lilex";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -163,5 +164,5 @@
 	--shadow-xl: var(--shadow-xl);
 	--shadow-2xl: var(--shadow-2xl);
 
-	--font-mono: var(--font-mono);
+	--font-mono: var(--font-jetbrains), monospace;
 }
