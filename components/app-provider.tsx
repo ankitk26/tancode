@@ -12,6 +12,8 @@ import {
 } from "react";
 
 type AppState = {
+	mode: "light" | "dark";
+	toggleMode: () => void;
 	theme: string;
 	setTheme: (value: string) => void;
 	fontFamily: string;
@@ -44,6 +46,7 @@ type AppState = {
 const STORAGE_KEY = "next-pen-settings";
 
 const defaultSettings = {
+	mode: "dark" as "light" | "dark",
 	theme: "vitesse-dark",
 	fontFamily: "var(--font-jetbrains)",
 	fontSize: 14,
@@ -63,7 +66,12 @@ function getStoredSettings() {
 			const theme = validThemeValues.includes(parsed.theme)
 				? parsed.theme
 				: defaultSettings.theme;
-			return { ...defaultSettings, ...parsed, theme };
+			// Validate mode - fallback to default if invalid
+			const mode =
+				parsed.mode === "light" || parsed.mode === "dark"
+					? parsed.mode
+					: defaultSettings.mode;
+			return { ...defaultSettings, ...parsed, theme, mode };
 		}
 	} catch {
 		// Fallback to defaults if parsing fails
@@ -89,6 +97,9 @@ export const AppContext = createContext<AppState>({} as AppState);
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 	// Initialize with default settings to avoid SSR/hydration mismatch
+	const [modeState, setModeState] = useState<"light" | "dark">(
+		defaultSettings.mode,
+	);
 	const [themeState, setThemeState] = useState(defaultSettings.theme);
 	const [fontFamilyState, setFontFamilyState] = useState(
 		defaultSettings.fontFamily,
@@ -111,6 +122,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 	// Load settings from localStorage on client-side only
 	useEffect(() => {
 		const stored = getStoredSettings();
+		setModeState(stored.mode);
 		setThemeState(stored.theme);
 		setFontFamilyState(stored.fontFamily);
 		setFontSizeState(stored.fontSize);
@@ -119,6 +131,23 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 		setAlignmentState(stored.alignment);
 		setLanguageState(stored.language);
 		setIsLoaded(true);
+	}, []);
+
+	// Apply dark mode class to document
+	useEffect(() => {
+		if (modeState === "dark") {
+			document.documentElement.classList.add("dark");
+		} else {
+			document.documentElement.classList.remove("dark");
+		}
+	}, [modeState]);
+
+	const toggleMode = useCallback(() => {
+		setModeState((prev) => {
+			const next = prev === "dark" ? "light" : "dark";
+			saveSetting("mode", next);
+			return next;
+		});
 	}, []);
 
 	const setTheme = useCallback((value: string) => {
@@ -195,6 +224,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<AppContext.Provider
 			value={{
+				mode: modeState,
+				toggleMode,
 				theme: themeState,
 				setTheme,
 				fontFamily: fontFamilyState,
