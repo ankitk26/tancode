@@ -5,7 +5,7 @@ import { createHighlighter } from "shiki";
 import { shikiThemes } from "@/lib/constants";
 import { supportedLanguages } from "@/lib/supported-languages";
 import { SupportedLanguage } from "@/lib/types";
-import { useEditor } from "./app-provider";
+import { useEditorSettingsStore } from "@/stores/editor-settings-store";
 
 type Props = {
 	language: string;
@@ -42,7 +42,7 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 		showLineNumbers,
 		minimap,
 		vimMode,
-	} = useEditor();
+	} = useEditorSettingsStore();
 	const [themesRegistered, setThemesRegistered] = useState(false);
 	const vimModeRef = useRef<any>(null);
 	const editorRef = useRef<any>(null);

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEditor } from "@/components/app-provider";
 import FontSizeInput from "@/components/font-size-input";
 import Preview from "@/components/preview";
 import { Label } from "@/components/ui/label";
@@ -13,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { fonts, shikiThemes } from "@/lib/constants";
+import { useEditorSettingsStore } from "@/stores/editor-settings-store";
 
 export default function Settings() {
 	const {
@@ -28,7 +28,7 @@ export default function Settings() {
 		setMinimap,
 		vimMode,
 		setVimMode,
-	} = useEditor();
+	} = useEditorSettingsStore();
 
 	return (
 		<div className="grid max-h-screen min-h-150 w-full grid-cols-1 gap-6 lg:grid-cols-2">

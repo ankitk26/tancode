@@ -1,10 +1,10 @@
 import { IconCheck, IconCopy } from "@tabler/icons-react";
 import { useState } from "react";
-import { useEditor } from "./app-provider";
+import { useCodeExecutionStore } from "@/stores/code-execution-store";
 import { Textarea } from "./ui/textarea";
 
 export default function CodeOutput() {
-	const { output } = useEditor();
+	const { output } = useCodeExecutionStore();
 	const [copied, setCopied] = useState(false);
 
 	if (!output) {
