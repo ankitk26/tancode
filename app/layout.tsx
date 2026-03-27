@@ -53,7 +53,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 					<AppProvider>
 						<div className="flex w-full flex-col h-screen overflow-hidden">
 							<Header />
-							<main className="flex-1 p-4 w-full overflow-y-auto lg:overflow-hidden">
+							<main className="flex-1 p-4 w-full min-h-0 overflow-hidden">
 								{children}
 							</main>
 						</div>
