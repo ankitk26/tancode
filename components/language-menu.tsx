@@ -1,7 +1,8 @@
 "use client";
 
 import { compilerLanguages } from "@/lib/supported-languages";
-import { useLanguageStore } from "@/stores/language-store";
+import { useCodeExecutionActions } from "@/stores/code-execution-store";
+import { useLanguageActions } from "@/stores/language-store";
 import {
 	Select,
 	SelectContent,
@@ -12,7 +13,8 @@ import {
 } from "./ui/select";
 
 export default function LanguageMenu() {
-	const { setLanguage } = useLanguageStore();
+	const { setLanguage } = useLanguageActions();
+	const { resetCodeToBoilerplate } = useCodeExecutionActions();
 
 	const compilerLanguagesList = Object.values(compilerLanguages).map(
 		({ value, label }) => ({ value, label }),
@@ -21,6 +23,8 @@ export default function LanguageMenu() {
 	const handleLanguageChange = (val: string | null) => {
 		if (!val) return;
 		setLanguage(val);
+		// Reset code to boilerplate when language changes
+		resetCodeToBoilerplate(val);
 	};
 
 	return (

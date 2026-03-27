@@ -1,9 +1,13 @@
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
-import { useEditorSettingsStore } from "@/stores/editor-settings-store";
+import {
+	useEditorFontSize,
+	useEditorSettingsActions,
+} from "@/stores/editor-settings-store";
 
 const FontSizeInput = () => {
-	const { fontSize, setFontSize } = useEditorSettingsStore();
+	const fontSize = useEditorFontSize();
+	const { setFontSize } = useEditorSettingsActions();
 
 	return (
 		<div className="flex w-32 items-center border border-input">

@@ -1,17 +1,24 @@
 "use client";
 
 import { useCallback, useEffect } from "react";
-import { useCodeExecutionStore } from "@/stores/code-execution-store";
-import { useLanguageStore } from "@/stores/language-store";
+import {
+	useCodeExecutionCode,
+	useCodeExecutionStdIn,
+	useCodeExecutionIsSubmitting,
+	useCodeExecutionActions,
+} from "@/stores/code-execution-store";
+import { useLanguage } from "@/stores/language-store";
 import CodeInput from "./code-input";
 import CodeOutput from "./code-output";
 import CompileButton from "./compile-button";
 import Editor from "./editor";
 
 export default function ProgrammingEditor() {
-	const { language } = useLanguageStore();
-	const { code, setCode, stdIn, setOutput, isSubmitting, setIsSubmitting } =
-		useCodeExecutionStore();
+	const language = useLanguage();
+	const code = useCodeExecutionCode();
+	const stdIn = useCodeExecutionStdIn();
+	const isSubmitting = useCodeExecutionIsSubmitting();
+	const { setCode, setOutput, setIsSubmitting } = useCodeExecutionActions();
 
 	const submitCode = useCallback(async () => {
 		if (isSubmitting) return;

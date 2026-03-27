@@ -2,12 +2,13 @@
 
 import { IconMoon, IconSettings, IconSun } from "@tabler/icons-react";
 import Link from "next/link";
-import { useThemeStore } from "@/stores/theme-store";
+import { useThemeMode, useThemeActions } from "@/stores/theme-store";
 import LanguageMenu from "./language-menu";
 import { Button } from "./ui/button";
 
 export default function Header() {
-	const { mode, toggleMode } = useThemeStore();
+	const mode = useThemeMode();
+	const { toggleMode } = useThemeActions();
 
 	return (
 		<nav className="shrink-0 px-4 py-2 shadow-md">

@@ -1,13 +1,18 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+type ThemeMode = "light" | "dark";
+
 type ThemeState = {
-	mode: "light" | "dark";
-	toggleMode: () => void;
-	setMode: (mode: "light" | "dark") => void;
+	mode: ThemeMode;
 };
 
-const applyDarkModeClass = (mode: "light" | "dark") => {
+type ThemeActions = {
+	toggleMode: () => void;
+	setMode: (mode: ThemeMode) => void;
+};
+
+const applyDarkModeClass = (mode: ThemeMode) => {
 	if (typeof document === "undefined") return;
 	if (mode === "dark") {
 		document.documentElement.classList.add("dark");
@@ -16,19 +21,22 @@ const applyDarkModeClass = (mode: "light" | "dark") => {
 	}
 };
 
-export const useThemeStore = create<ThemeState>()(
+// Store is not exported to prevent direct subscription
+const useThemeStore = create<ThemeState & { actions: ThemeActions }>()(
 	persist(
 		(set) => ({
 			mode: "dark",
-			toggleMode: () =>
-				set((state) => {
-					const next = state.mode === "dark" ? "light" : "dark";
-					applyDarkModeClass(next);
-					return { mode: next };
-				}),
-			setMode: (mode) => {
-				applyDarkModeClass(mode);
-				set({ mode });
+			actions: {
+				toggleMode: () =>
+					set((state) => {
+						const next = state.mode === "dark" ? "light" : "dark";
+						applyDarkModeClass(next);
+						return { mode: next };
+					}),
+				setMode: (mode) => {
+					applyDarkModeClass(mode);
+					set({ mode });
+				},
 			},
 		}),
 		{
@@ -41,3 +49,7 @@ export const useThemeStore = create<ThemeState>()(
 		},
 	),
 );
+
+// Atomic selectors - export only these
+export const useThemeMode = () => useThemeStore((state) => state.mode);
+export const useThemeActions = () => useThemeStore((state) => state.actions);
