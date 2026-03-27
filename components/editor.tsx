@@ -5,7 +5,15 @@ import { createHighlighter } from "shiki";
 import { shikiThemes } from "@/lib/constants";
 import { supportedLanguages } from "@/lib/supported-languages";
 import { SupportedLanguage } from "@/lib/types";
-import { useEditorSettingsStore } from "@/stores/editor-settings-store";
+import {
+	useEditorTheme,
+	useEditorFontFamily,
+	useEditorFontSize,
+	useEditorWrap,
+	useEditorShowLineNumbers,
+	useEditorMinimap,
+	useEditorVimMode,
+} from "@/stores/editor-settings-store";
 
 type Props = {
 	language: string;
@@ -34,15 +42,13 @@ const highlighterPromise = createHighlighter({
 
 export default function CodeEditor({ language, code, setCode }: Props) {
 	const monaco = useMonaco();
-	const {
-		theme,
-		fontFamily,
-		fontSize,
-		wrap,
-		showLineNumbers,
-		minimap,
-		vimMode,
-	} = useEditorSettingsStore();
+	const theme = useEditorTheme();
+	const fontFamily = useEditorFontFamily();
+	const fontSize = useEditorFontSize();
+	const wrap = useEditorWrap();
+	const showLineNumbers = useEditorShowLineNumbers();
+	const minimap = useEditorMinimap();
+	const vimMode = useEditorVimMode();
 	const [themesRegistered, setThemesRegistered] = useState(false);
 	const vimModeRef = useRef<any>(null);
 	const editorRef = useRef<any>(null);

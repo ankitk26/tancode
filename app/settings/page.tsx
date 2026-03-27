@@ -12,23 +12,31 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { fonts, shikiThemes } from "@/lib/constants";
-import { useEditorSettingsStore } from "@/stores/editor-settings-store";
+import {
+	useEditorTheme,
+	useEditorFontFamily,
+	useEditorWrap,
+	useEditorShowLineNumbers,
+	useEditorMinimap,
+	useEditorVimMode,
+	useEditorSettingsActions,
+} from "@/stores/editor-settings-store";
 
 export default function Settings() {
+	const theme = useEditorTheme();
+	const fontFamily = useEditorFontFamily();
+	const wrap = useEditorWrap();
+	const showLineNumbers = useEditorShowLineNumbers();
+	const minimap = useEditorMinimap();
+	const vimMode = useEditorVimMode();
 	const {
-		theme,
-		fontFamily,
-		wrap,
 		setTheme,
 		setWrap,
 		setFontFamily,
-		showLineNumbers,
 		setShowLineNumbers,
-		minimap,
 		setMinimap,
-		vimMode,
 		setVimMode,
-	} = useEditorSettingsStore();
+	} = useEditorSettingsActions();
 
 	return (
 		<div className="grid max-h-screen min-h-150 w-full grid-cols-1 gap-6 lg:grid-cols-2">
