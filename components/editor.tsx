@@ -4,7 +4,7 @@ import { supportedLanguages } from "@/lib/supported-languages";
 import { SupportedLanguage } from "@/lib/types";
 import { shikiToMonaco } from "@shikijs/monaco";
 import { createHighlighter } from "shiki";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { shikiThemes } from "@/lib/constants";
 
 type Props = {
@@ -35,6 +35,7 @@ const highlighterPromise = createHighlighter({
 export default function CodeEditor({ language, code, setCode }: Props) {
 	const monaco = useMonaco();
 	const { theme, fontFamily, fontSize, wrap, showLineNumbers } = useEditor();
+	const [themesRegistered, setThemesRegistered] = useState(false);
 
 	const monacoLanguage =
 		supportedLanguages[language as SupportedLanguage]?.monacoLanguage ||
@@ -46,12 +47,14 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 		// Register Shiki themes with Monaco
 		highlighterPromise.then((highlighter) => {
 			shikiToMonaco(highlighter, monaco);
+			setThemesRegistered(true);
 		});
 	}, [monaco]);
 
 	return (
 		<div className="flex flex-col items-center grow h-full border border-border">
 			<Editor
+				key={`${monacoLanguage}-${theme}-${themesRegistered}`}
 				language={monacoLanguage}
 				value={code}
 				theme={theme}
