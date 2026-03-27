@@ -1,11 +1,14 @@
 "use client";
 
-import { IconBrandGithub, IconSettings } from "@tabler/icons-react";
+import { IconMoon, IconSettings, IconSun } from "@tabler/icons-react";
 import Link from "next/link";
 import LanguageMenu from "./language-menu";
 import { Button } from "./ui/button";
+import { useEditor } from "./app-provider";
 
 export default function Header() {
+	const { mode, toggleMode } = useEditor();
+
 	return (
 		<nav className="py-2 px-4 shadow-md shrink-0">
 			<header className="w-full flex items-center justify-between">
@@ -25,12 +28,10 @@ export default function Header() {
 							<IconSettings />
 						</Button>
 					</Link>
-					{/*<SettingsModal />*/}
 
-					<Button size="icon" variant="secondary">
-						<a href="https://github.com/ankitk26/nextpen">
-							<IconBrandGithub className="size-5" />
-						</a>
+					{/* Theme toggler */}
+					<Button size="icon" variant="outline" onClick={toggleMode}>
+						{mode === "dark" ? <IconSun /> : <IconMoon />}
 					</Button>
 				</div>
 			</header>

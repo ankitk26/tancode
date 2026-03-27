@@ -6,23 +6,23 @@ const FontSizeInput = () => {
 	const { fontSize, setFontSize } = useEditor();
 
 	return (
-		<div className="flex items-center w-48 border border-input">
+		<div className="flex items-center w-32 border border-input">
 			<Button
 				variant="ghost"
 				size="icon"
 				onClick={() => setFontSize((p) => Math.max(1, p - 1))}
 			>
-				<IconMinus className="h-4 w-4" />
+				<IconMinus className="size-3" />
 			</Button>
 
-			<span className="grow text-sm text-center">{fontSize}</span>
+			<span className="grow text-xs text-center">{fontSize}</span>
 
 			<Button
 				variant="ghost"
 				size="icon"
 				onClick={() => setFontSize((p) => p + 1)}
 			>
-				<IconPlus className="h-4 w-4" />
+				<IconPlus className="size-3" />
 			</Button>
 		</div>
 	);

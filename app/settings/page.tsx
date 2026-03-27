@@ -37,7 +37,7 @@ export default function Settings() {
 			<div className="flex flex-col w-full space-y-4 overflow-y-auto">
 				<h1 className="text-lg">Settings</h1>
 
-				<div className="space-y-1 w-full">
+				<div className="space-y-2 w-full">
 					{/* Change theme of editor */}
 					<Label htmlFor="app-theme">Theme</Label>
 
@@ -66,7 +66,7 @@ export default function Settings() {
 				</div>
 
 				{/* Font family setting */}
-				<div className="space-y-1">
+				<div className="space-y-2">
 					<Label htmlFor="app-font">Font</Label>
 					<Select
 						items={fonts}
@@ -90,13 +90,13 @@ export default function Settings() {
 				</div>
 
 				{/* Font size setting */}
-				<div className="space-y-1">
+				<div className="space-y-2">
 					<Label>Font Size</Label>
 					<FontSizeInput />
 				</div>
 
 				{/* Wrap content setting */}
-				<div className="flex items-center gap-4">
+				<div className="flex items-center mt-4 gap-4">
 					<Label htmlFor="app-wrap-setting">Wrap Content</Label>
 					<Switch
 						id="app-wrap-setting"
