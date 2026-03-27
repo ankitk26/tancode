@@ -27,8 +27,6 @@ export async function POST(request: NextRequest) {
 
 		return Response.json({
 			output: data.output,
-			memory: data.memory,
-			cpuTime: data.cpuTime,
 			isExecutionSuccess: data.isExecutionSuccess,
 		});
 	} catch {

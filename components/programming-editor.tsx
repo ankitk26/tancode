@@ -41,8 +41,6 @@ export default function ProgrammingEditor() {
 			const submissionData = await submissionResponse.json();
 			setOutput({
 				output: submissionData.output,
-				cpuTime: submissionData.cpuTime,
-				memory: submissionData.memory,
 				isExecutionSuccess: submissionData.isExecutionSuccess,
 			});
 		} catch (error) {
