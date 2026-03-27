@@ -142,6 +142,7 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 						scrollBeyondLastLine: false,
 						minimap: { enabled: minimap },
 						automaticLayout: true,
+						matchBrackets: "never",
 					}}
 				/>
 			</div>
