@@ -24,6 +24,8 @@ type AppState = {
 	setWrap: (value: boolean) => void;
 	showLineNumbers: boolean;
 	setShowLineNumbers: (value: boolean) => void;
+	minimap: boolean;
+	setMinimap: (value: boolean) => void;
 	alignment: string;
 	setAlignment: (value: string) => void;
 	language: string;
@@ -52,6 +54,7 @@ const defaultSettings = {
 	fontSize: 14,
 	wrap: true,
 	showLineNumbers: true,
+	minimap: true,
 	alignment: "right",
 	language: "cpp17",
 };
@@ -111,6 +114,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 	const [showLineNumbersState, setShowLineNumbersState] = useState(
 		defaultSettings.showLineNumbers,
 	);
+	const [minimapState, setMinimapState] = useState(defaultSettings.minimap);
 	const [alignmentState, setAlignmentState] = useState(
 		defaultSettings.alignment,
 	);
@@ -128,6 +132,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 		setFontSizeState(stored.fontSize);
 		setWrapState(stored.wrap);
 		setShowLineNumbersState(stored.showLineNumbers);
+		setMinimapState(stored.minimap);
 		setAlignmentState(stored.alignment);
 		setLanguageState(stored.language);
 		setIsLoaded(true);
@@ -180,6 +185,11 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 	const setShowLineNumbers = useCallback((value: boolean) => {
 		setShowLineNumbersState(value);
 		saveSetting("showLineNumbers", value);
+	}, []);
+
+	const setMinimap = useCallback((value: boolean) => {
+		setMinimapState(value);
+		saveSetting("minimap", value);
 	}, []);
 
 	const setAlignment = useCallback((value: string) => {
@@ -236,6 +246,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 				setWrap,
 				showLineNumbers: showLineNumbersState,
 				setShowLineNumbers,
+				minimap: minimapState,
+				setMinimap,
 				alignment: alignmentState,
 				setAlignment,
 				language: languageState,

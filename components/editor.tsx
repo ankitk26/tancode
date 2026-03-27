@@ -34,7 +34,8 @@ const highlighterPromise = createHighlighter({
 
 export default function CodeEditor({ language, code, setCode }: Props) {
 	const monaco = useMonaco();
-	const { theme, fontFamily, fontSize, wrap, showLineNumbers } = useEditor();
+	const { theme, fontFamily, fontSize, wrap, showLineNumbers, minimap } =
+		useEditor();
 	const [themesRegistered, setThemesRegistered] = useState(false);
 
 	const monacoLanguage =
@@ -72,7 +73,7 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 					wordWrap: wrap ? "on" : "off",
 					lineNumbers: showLineNumbers ? "on" : "off",
 					scrollBeyondLastLine: false,
-					minimap: { enabled: true },
+					minimap: { enabled: minimap },
 					automaticLayout: true,
 				}}
 			/>
