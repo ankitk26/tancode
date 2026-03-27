@@ -10,7 +10,7 @@ type AppState = {
 	fontFamily: string;
 	setFontFamily: (value: string) => void;
 	fontSize: number;
-	setFontSize: (value: number) => void;
+	setFontSize: (value: number | ((prev: number) => number)) => void;
 	wrap: boolean;
 	setWrap: (value: boolean) => void;
 	showLineNumbers: boolean;
@@ -98,10 +98,17 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 		saveSetting("fontFamily", value);
 	}, []);
 
-	const setFontSize = useCallback((value: number) => {
-		setFontSizeState(value);
-		saveSetting("fontSize", value);
-	}, []);
+	const setFontSize = useCallback(
+		(value: number | ((prev: number) => number)) => {
+			setFontSizeState((prev: number) => {
+				const newValue =
+					typeof value === "function" ? value(prev) : value;
+				saveSetting("fontSize", newValue);
+				return newValue;
+			});
+		},
+		[],
+	);
 
 	const setWrap = useCallback((value: boolean) => {
 		setWrapState(value);
