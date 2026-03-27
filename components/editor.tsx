@@ -9,29 +9,18 @@ type Props = {
 	setCode: React.Dispatch<React.SetStateAction<string>>;
 };
 
-// Map Ace themes to Monaco themes
-const themeMap: Record<string, string> = {
-	cobalt: "vs-dark",
-	dracula: "vs-dark",
-	monokai: "vs-dark",
-	nord_dark: "vs-dark",
-	one_dark: "vs-dark",
-	tomorrow_night: "vs-dark",
-	tomorrow_night_blue: "vs-dark",
-	tomorrow_night_eighties: "vs-dark",
-	vibrant_ink: "vs-dark",
-};
+// Monaco built-in themes: vs (light), vs-dark, hc-black, hc-light
 
 export default function CodeEditor({ language, code, setCode }: Props) {
 	const { theme, fontFamily, fontSize, wrap, showLineNumbers } = useEditor();
 
-	const monacoTheme = themeMap[theme] || "vs-dark";
+	const monacoTheme = theme || "vs-dark";
 	const monacoLanguage =
 		supportedLanguages[language as SupportedLanguage]?.monacoLanguage ||
 		language;
 
 	return (
-		<div className="flex flex-col items-center grow h-full">
+		<div className="flex flex-col items-center grow h-full border border-border">
 			<Editor
 				language={monacoLanguage}
 				value={code}

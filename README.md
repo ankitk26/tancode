@@ -31,7 +31,7 @@ A simple online code editor where you can write and run code in a few programmin
 - TypeScript
 - Tailwind CSS
 - shadcn/ui
-- Ace Editor (react-ace)
+- Monaco Editor (@monaco-editor/react)
 
 ## Installation
 

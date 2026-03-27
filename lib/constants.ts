@@ -1,27 +1,16 @@
 const themesList = [
-	"dracula",
-	"cobalt",
-	"monokai",
-	"tomorrow_night",
-	"tomorrow_night_blue",
-	"nord_dark",
-	"tomorrow_night_eighties",
-	"vibrant_ink",
-	"one_dark",
+	{ value: "vs", label: "Light" },
+	{ value: "vs-dark", label: "Dark" },
+	{ value: "hc-black", label: "High Contrast Dark" },
+	{ value: "hc-light", label: "High Contrast Light" },
 ];
-export const themes = themesList.map((theme) => {
-	const label = theme.split("_").join(" ");
-	return { value: theme, label };
-});
+export const themes = themesList;
 
 const fontsList = [
 	"Consolas",
 	"Jetbrains Mono",
-	"Hack",
-	"Monaco",
-	"IBM Plex Mono",
 	"Cascadia Code",
-	"Source Code Pro",
+	"Geist Mono",
 	"Fira Code",
 	"Menlo",
 	"Courier",
