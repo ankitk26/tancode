@@ -67,14 +67,14 @@ export default function ProgrammingEditor() {
 	}, [submitCode]);
 
 	return (
-		<div className="flex flex-col lg:flex-row gap-4 lg:h-full lg:overflow-hidden">
+		<div className="flex flex-col lg:flex-row gap-4 h-full min-h-0 overflow-hidden">
 			{/* Left side - Code Editor */}
-			<section className="h-[400px] lg:flex-1 lg:h-full">
+			<section className="h-[400px] lg:flex-1 lg:h-full min-w-0 min-h-0">
 				<Editor language={language} code={code} setCode={setCode} />
 			</section>
 
 			{/* Right side - Input/Output */}
-			<div className="flex flex-col gap-4 lg:w-[400px] xl:w-[450px]">
+			<div className="flex flex-col gap-4 lg:w-[400px] xl:w-[450px] min-w-0 min-h-0">
 				{/* Input Section */}
 				<section className="flex-1 flex flex-col min-h-[150px]">
 					<CodeInput />
