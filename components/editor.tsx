@@ -58,13 +58,16 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 		// Initialize vim mode if it's enabled when editor mounts
 		if (vimMode) {
 			const setupVimMode = async () => {
-				if (!vimModeRef.current) {
-					const { initVimMode } = await import("monaco-vim");
-					vimModeRef.current = initVimMode(
-						editor,
-						vimStatusBarRef.current,
-					);
+				// Dispose any existing vim mode instance before initializing
+				if (vimModeRef.current) {
+					vimModeRef.current.dispose();
+					vimModeRef.current = null;
 				}
+				const { initVimMode } = await import("monaco-vim");
+				vimModeRef.current = initVimMode(
+					editor,
+					vimStatusBarRef.current,
+				);
 			};
 			setupVimMode();
 		}
