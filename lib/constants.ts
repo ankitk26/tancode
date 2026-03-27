@@ -1,42 +1,33 @@
-// Shiki themes for Monaco Editor (dark and light variants)
+// Shiki themes for Monaco Editor (sorted alphabetically by label)
 export const shikiThemes = [
-	// Vitesse
-	{ value: "vitesse-dark", label: "Vitesse Dark" },
-	{ value: "vitesse-light", label: "Vitesse Light" },
-	// Rose Pine
-	{ value: "rose-pine", label: "Rose Pine" },
-	{ value: "rose-pine-dawn", label: "Rose Pine Dawn" },
-	// Tokyo Night
-	{ value: "tokyo-night", label: "Tokyo Night" },
-	// GitHub
+	{ value: "catppuccin-latte", label: "Catppuccin Latte" },
+	{ value: "catppuccin-mocha", label: "Catppuccin Mocha" },
 	{ value: "github-dark", label: "GitHub Dark" },
 	{ value: "github-light", label: "GitHub Light" },
-	// Vesper
-	{ value: "vesper", label: "Vesper" },
-	// Poimandres
+	{ value: "night-owl", label: "Night Owl" },
+	{ value: "one-dark-pro", label: "One Dark Pro" },
 	{ value: "poimandres", label: "Poimandres" },
-	// Catppuccin
-	{ value: "catppuccin-mocha", label: "Catppuccin Mocha" },
-	{ value: "catppuccin-latte", label: "Catppuccin Latte" },
-	// VS Code
+	{ value: "rose-pine", label: "Rose Pine" },
+	{ value: "rose-pine-dawn", label: "Rose Pine Dawn" },
+	{ value: "tokyo-night", label: "Tokyo Night" },
+	{ value: "vesper", label: "Vesper" },
+	{ value: "vitesse-dark", label: "Vitesse Dark" },
+	{ value: "vitesse-light", label: "Vitesse Light" },
 	{ value: "dark-plus", label: "VS Code Dark+" },
 	{ value: "light-plus", label: "VS Code Light+" },
-	// Night Owl
-	{ value: "night-owl", label: "Night Owl" },
-	// One Dark
-	{ value: "one-dark-pro", label: "One Dark Pro" },
 ];
 
 // Valid theme values for validation
 export const validThemeValues = shikiThemes.map((t) => t.value);
 
+// Fonts sorted alphabetically by label
 const fontsList = [
-	{ value: "var(--font-jetbrains)", label: "JetBrains Mono" },
-	{ value: "var(--font-geist)", label: "Geist Mono" },
-	{ value: "var(--font-fira)", label: "Fira Code" },
-	{ value: "var(--font-source)", label: "Source Code Pro" },
-	{ value: "Lilex Variable", label: "Lilex" },
 	{ value: "var(--font-courier)", label: "Courier Prime" },
+	{ value: "var(--font-fira)", label: "Fira Code" },
+	{ value: "var(--font-geist)", label: "Geist Mono" },
+	{ value: "var(--font-jetbrains)", label: "JetBrains Mono" },
+	{ value: "Lilex Variable", label: "Lilex" },
+	{ value: "var(--font-source)", label: "Source Code Pro" },
 	{ value: "monospace", label: "System Default" },
 ];
 export const fonts = fontsList;
