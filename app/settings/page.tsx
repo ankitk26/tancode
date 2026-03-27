@@ -24,6 +24,8 @@ export default function Settings() {
 		setFontFamily,
 		showLineNumbers,
 		setShowLineNumbers,
+		minimap,
+		setMinimap,
 	} = useEditor();
 
 	return (
@@ -114,6 +116,16 @@ export default function Settings() {
 						onCheckedChange={(checked) =>
 							setShowLineNumbers(checked)
 						}
+					/>
+				</div>
+
+				{/* Minimap setting */}
+				<div className="flex items-center gap-4">
+					<Label htmlFor="app-minimap">Minimap</Label>
+					<Switch
+						id="app-minimap"
+						checked={minimap}
+						onCheckedChange={(checked) => setMinimap(checked)}
 					/>
 				</div>
 			</div>
