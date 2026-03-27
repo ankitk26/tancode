@@ -59,6 +59,13 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 				value={code}
 				theme={theme}
 				onChange={(value) => setCode(value || "")}
+				loading={
+					<div className="absolute inset-0 flex items-center justify-center bg-background dark">
+						<span className="font-mono text-lg text-foreground">
+							Loading
+						</span>
+					</div>
+				}
 				options={{
 					fontSize: fontSize,
 					fontFamily: fontFamily,
