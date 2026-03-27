@@ -3,7 +3,13 @@
 import { SubmissionOutput } from "@/lib/types";
 import { supportedLanguages } from "@/lib/supported-languages";
 import { validThemeValues } from "@/lib/constants";
-import { createContext, useContext, useState, useCallback } from "react";
+import {
+	createContext,
+	useContext,
+	useState,
+	useCallback,
+	useEffect,
+} from "react";
 
 type AppState = {
 	theme: string;
@@ -82,17 +88,38 @@ function saveSetting(key: string, value: unknown) {
 export const AppContext = createContext<AppState>({} as AppState);
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
-	const stored = getStoredSettings();
-
-	const [themeState, setThemeState] = useState(stored.theme);
-	const [fontFamilyState, setFontFamilyState] = useState(stored.fontFamily);
-	const [fontSizeState, setFontSizeState] = useState(stored.fontSize);
-	const [wrapState, setWrapState] = useState(stored.wrap);
-	const [showLineNumbersState, setShowLineNumbersState] = useState(
-		stored.showLineNumbers,
+	// Initialize with default settings to avoid SSR/hydration mismatch
+	const [themeState, setThemeState] = useState(defaultSettings.theme);
+	const [fontFamilyState, setFontFamilyState] = useState(
+		defaultSettings.fontFamily,
 	);
-	const [alignmentState, setAlignmentState] = useState(stored.alignment);
-	const [languageState, setLanguageState] = useState(stored.language);
+	const [fontSizeState, setFontSizeState] = useState(
+		defaultSettings.fontSize,
+	);
+	const [wrapState, setWrapState] = useState(defaultSettings.wrap);
+	const [showLineNumbersState, setShowLineNumbersState] = useState(
+		defaultSettings.showLineNumbers,
+	);
+	const [alignmentState, setAlignmentState] = useState(
+		defaultSettings.alignment,
+	);
+	const [languageState, setLanguageState] = useState(
+		defaultSettings.language,
+	);
+	const [isLoaded, setIsLoaded] = useState(false);
+
+	// Load settings from localStorage on client-side only
+	useEffect(() => {
+		const stored = getStoredSettings();
+		setThemeState(stored.theme);
+		setFontFamilyState(stored.fontFamily);
+		setFontSizeState(stored.fontSize);
+		setWrapState(stored.wrap);
+		setShowLineNumbersState(stored.showLineNumbers);
+		setAlignmentState(stored.alignment);
+		setLanguageState(stored.language);
+		setIsLoaded(true);
+	}, []);
 
 	const setTheme = useCallback((value: string) => {
 		setThemeState(value);
@@ -137,10 +164,23 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 	}, []);
 
 	const [code, setCode] = useState(
-		(supportedLanguages[stored.language as keyof typeof supportedLanguages]
-			?.boilerplate as string) ||
+		(supportedLanguages[
+			defaultSettings.language as keyof typeof supportedLanguages
+		]?.boilerplate as string) ||
 			(supportedLanguages.cpp17.boilerplate as string),
 	);
+
+	// Update code when language is loaded from localStorage
+	useEffect(() => {
+		if (isLoaded) {
+			const newBoilerplate =
+				(supportedLanguages[
+					languageState as keyof typeof supportedLanguages
+				]?.boilerplate as string) ||
+				(supportedLanguages.cpp17.boilerplate as string);
+			setCode(newBoilerplate);
+		}
+	}, [isLoaded, languageState]);
 	const [stdIn, setStdIn] = useState("");
 	const [output, setOutput] = useState<SubmissionOutput | null>(null);
 	const [isSubmitting, setIsSubmitting] = useState(false);
