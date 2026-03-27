@@ -6,7 +6,6 @@ import {
 	Geist_Mono,
 	Courier_Prime,
 } from "next/font/google";
-import { AppProvider } from "@/components/app-provider";
 import Header from "@/components/header";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./app.css";
@@ -50,14 +49,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 		>
 			<body className={`antialiased ${jetbrainsMono.className}`}>
 				<TooltipProvider>
-					<AppProvider>
-						<div className="flex h-screen w-full flex-col overflow-hidden">
-							<Header />
-							<main className="min-h-0 w-full flex-1 overflow-hidden p-4">
-								{children}
-							</main>
-						</div>
-					</AppProvider>
+					<div className="flex h-screen w-full flex-col overflow-hidden">
+						<Header />
+						<main className="min-h-0 w-full flex-1 overflow-hidden p-4">
+							{children}
+						</main>
+					</div>
 				</TooltipProvider>
 			</body>
 		</html>
