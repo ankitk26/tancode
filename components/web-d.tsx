@@ -1,6 +1,5 @@
 "use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
 	IconBrackets,
 	IconCode,
@@ -8,6 +7,7 @@ import {
 	IconScript,
 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Editor from "./editor";
 
 const WebD = () => {
@@ -38,15 +38,15 @@ const WebD = () => {
 	}, [html, css, js]);
 
 	return (
-		<div className="h-full w-full flex flex-col lg:flex-row gap-4 overflow-hidden">
+		<div className="flex h-full w-full flex-col gap-4 overflow-hidden lg:flex-row">
 			{/* Editors section - top on mobile, left on desktop */}
-			<div className="h-[400px] lg:flex-1 lg:h-full flex flex-col min-w-0">
+			<div className="flex h-[400px] min-w-0 flex-col lg:h-full lg:flex-1">
 				{/* Code editor tabs */}
 				<Tabs
 					defaultValue="html"
-					className="flex-1 flex flex-col min-w-0"
+					className="flex min-w-0 flex-1 flex-col"
 				>
-					<TabsList className="h-auto p-1 w-full shrink-0">
+					<TabsList className="h-auto w-full shrink-0 p-1">
 						<TabsTrigger value="html">
 							<IconCode className="size-3.5" />
 							HTML
@@ -61,10 +61,10 @@ const WebD = () => {
 						</TabsTrigger>
 					</TabsList>
 
-					<div className="flex-1 min-h-0 overflow-hidden">
+					<div className="min-h-0 flex-1 overflow-hidden">
 						<TabsContent
 							value="html"
-							className="h-full m-0 p-0 overflow-hidden"
+							className="m-0 h-full overflow-hidden p-0"
 						>
 							<Editor
 								language="html"
@@ -74,7 +74,7 @@ const WebD = () => {
 						</TabsContent>
 						<TabsContent
 							value="css"
-							className="h-full m-0 p-0 overflow-hidden"
+							className="m-0 h-full overflow-hidden p-0"
 						>
 							<Editor
 								language="css"
@@ -84,7 +84,7 @@ const WebD = () => {
 						</TabsContent>
 						<TabsContent
 							value="javascript"
-							className="h-full m-0 p-0 overflow-hidden"
+							className="m-0 h-full overflow-hidden p-0"
 						>
 							<Editor
 								language="nodejs"
@@ -97,12 +97,12 @@ const WebD = () => {
 			</div>
 
 			{/* Preview section - bottom on mobile, right on desktop */}
-			<div className="flex-1 lg:flex-1 flex flex-col bg-background min-w-0">
-				<div className="flex items-center gap-2 px-4 py-3 bg-muted border-b border-border shrink-0">
+			<div className="flex min-w-0 flex-1 flex-col bg-background lg:flex-1">
+				<div className="flex shrink-0 items-center gap-2 border-b border-border bg-muted px-4 py-3">
 					<IconEye className="size-4" />
 					<span className="text-sm font-medium">Preview</span>
 				</div>
-				<div className="flex-1 min-h-0 overflow-hidden">
+				<div className="min-h-0 flex-1 overflow-hidden">
 					<iframe
 						title="output"
 						sandbox="allow-scripts"

@@ -31,17 +31,17 @@ export default function Settings() {
 	} = useEditor();
 
 	return (
-		<div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-150 max-h-screen gap-6">
+		<div className="grid max-h-screen min-h-150 w-full grid-cols-1 gap-6 lg:grid-cols-2">
 			{/* Preview Section */}
 			<div className="h-full">
 				<Preview />
 			</div>
 
 			{/* Settings menu */}
-			<div className="flex flex-col w-full space-y-4 overflow-y-auto">
+			<div className="flex w-full flex-col space-y-4 overflow-y-auto">
 				<h1 className="text-lg">Settings</h1>
 
-				<div className="space-y-2 w-full">
+				<div className="w-full space-y-2">
 					{/* Change theme of editor */}
 					<Label htmlFor="app-theme">Theme</Label>
 
@@ -100,7 +100,7 @@ export default function Settings() {
 				</div>
 
 				{/* Wrap content setting */}
-				<div className="flex items-center mt-4 gap-4">
+				<div className="mt-4 flex items-center gap-4">
 					<Label htmlFor="app-wrap-setting">Wrap Content</Label>
 					<Switch
 						id="app-wrap-setting"

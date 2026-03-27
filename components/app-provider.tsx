@@ -1,8 +1,5 @@
 "use client";
 
-import { SubmissionOutput } from "@/lib/types";
-import { supportedLanguages } from "@/lib/supported-languages";
-import { validThemeValues } from "@/lib/constants";
 import {
 	createContext,
 	useContext,
@@ -10,6 +7,9 @@ import {
 	useCallback,
 	useEffect,
 } from "react";
+import { validThemeValues } from "@/lib/constants";
+import { supportedLanguages } from "@/lib/supported-languages";
+import { SubmissionOutput } from "@/lib/types";
 
 type AppState = {
 	mode: "light" | "dark";

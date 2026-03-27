@@ -1,11 +1,11 @@
 import Editor, { useMonaco } from "@monaco-editor/react";
-import { useEditor } from "./app-provider";
+import { shikiToMonaco } from "@shikijs/monaco";
+import { useEffect, useRef, useState } from "react";
+import { createHighlighter } from "shiki";
+import { shikiThemes } from "@/lib/constants";
 import { supportedLanguages } from "@/lib/supported-languages";
 import { SupportedLanguage } from "@/lib/types";
-import { shikiToMonaco } from "@shikijs/monaco";
-import { createHighlighter } from "shiki";
-import { useEffect, useRef, useState } from "react";
-import { shikiThemes } from "@/lib/constants";
+import { useEditor } from "./app-provider";
 
 type Props = {
 	language: string;
@@ -118,8 +118,8 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 	}, [monaco]);
 
 	return (
-		<div className="flex flex-col grow h-full border border-border overflow-hidden">
-			<div className="flex-1 min-h-0">
+		<div className="flex h-full grow flex-col overflow-hidden border border-border">
+			<div className="min-h-0 flex-1">
 				<Editor
 					key={`${monacoLanguage}-${theme}-${themesRegistered}`}
 					language={monacoLanguage}
@@ -128,7 +128,7 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 					onChange={(value) => setCode(value || "")}
 					onMount={handleEditorMount}
 					loading={
-						<div className="absolute inset-0 flex items-center justify-center bg-background dark">
+						<div className="dark absolute inset-0 flex items-center justify-center bg-background">
 							<span className="font-mono text-lg text-foreground">
 								Loading
 							</span>
@@ -148,7 +148,7 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 			{/* Vim status bar - only visible when vim mode is enabled */}
 			<div
 				ref={vimStatusBarRef}
-				className={`shrink-0 bg-muted border-t border-border px-3 py-1 text-sm font-mono transition-all duration-200 ${
+				className={`shrink-0 border-t border-border bg-muted px-3 py-1 font-mono text-sm transition-all duration-200 ${
 					vimMode ? "block" : "hidden"
 				}`}
 				style={{ height: vimMode ? "28px" : "0px" }}

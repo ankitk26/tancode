@@ -2,16 +2,16 @@
 
 import { IconMoon, IconSettings, IconSun } from "@tabler/icons-react";
 import Link from "next/link";
+import { useEditor } from "./app-provider";
 import LanguageMenu from "./language-menu";
 import { Button } from "./ui/button";
-import { useEditor } from "./app-provider";
 
 export default function Header() {
 	const { mode, toggleMode } = useEditor();
 
 	return (
-		<nav className="py-2 px-4 shadow-md shrink-0">
-			<header className="w-full flex items-center justify-between">
+		<nav className="shrink-0 px-4 py-2 shadow-md">
+			<header className="flex w-full items-center justify-between">
 				{/* Logo */}
 				<Link href="/" className="text-lg font-medium">
 					nextpen

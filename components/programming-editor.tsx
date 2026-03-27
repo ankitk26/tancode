@@ -67,16 +67,16 @@ export default function ProgrammingEditor() {
 	}, [submitCode]);
 
 	return (
-		<div className="flex flex-col lg:flex-row gap-4 h-full min-h-0 overflow-hidden">
+		<div className="flex h-full min-h-0 flex-col gap-4 overflow-hidden lg:flex-row">
 			{/* Left side - Code Editor */}
-			<section className="h-[400px] lg:flex-1 lg:h-full min-w-0 min-h-0">
+			<section className="h-[400px] min-h-0 min-w-0 lg:h-full lg:flex-1">
 				<Editor language={language} code={code} setCode={setCode} />
 			</section>
 
 			{/* Right side - Input/Output */}
-			<div className="flex flex-col gap-4 lg:w-[400px] xl:w-[450px] min-w-0 min-h-0">
+			<div className="flex min-h-0 min-w-0 flex-col gap-4 lg:w-[400px] xl:w-[450px]">
 				{/* Input Section */}
-				<section className="flex-1 flex flex-col min-h-[150px]">
+				<section className="flex min-h-[150px] flex-1 flex-col">
 					<CodeInput />
 				</section>
 
@@ -84,7 +84,7 @@ export default function ProgrammingEditor() {
 				<CompileButton onRun={submitCode} isSubmitting={isSubmitting} />
 
 				{/* Output Section */}
-				<section className="flex-[2] flex flex-col min-h-[200px]">
+				<section className="flex min-h-[200px] flex-[2] flex-col">
 					<CodeOutput />
 				</section>
 			</div>

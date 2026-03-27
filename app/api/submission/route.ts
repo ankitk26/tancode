@@ -1,6 +1,6 @@
+import { NextRequest } from "next/server";
 import { compilerLanguages } from "@/lib/supported-languages";
 import { CompilerLanguage } from "@/lib/types";
-import { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
 	try {
