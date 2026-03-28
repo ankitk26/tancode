@@ -1,4 +1,5 @@
 import { compilerLanguages } from "@/lib/supported-languages";
+import { AppLanguage, CompilerLanguage } from "@/lib/types";
 import { useCodeExecutionActions } from "@/stores/code-execution-store";
 import { useLanguageActions } from "@/stores/language-store";
 import {
@@ -20,9 +21,12 @@ export default function LanguageMenu() {
 
 	const handleLanguageChange = (val: string | null) => {
 		if (!val) return;
-		setLanguage(val);
+		const language = val as AppLanguage;
+		setLanguage(language);
 		// Reset code to boilerplate when language changes
-		resetCodeToBoilerplate(val);
+		if (language !== "webd") {
+			resetCodeToBoilerplate(language as CompilerLanguage);
+		}
 	};
 
 	return (

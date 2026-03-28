@@ -12,3 +12,4 @@ export type SubmissionOutput = {
 export type CompilerLanguage = keyof typeof compilerLanguages;
 export type EditorOnlyLanguage = keyof typeof editorOnlyLanguages;
 export type SupportedLanguage = keyof typeof supportedLanguages;
+export type AppLanguage = CompilerLanguage | "webd";

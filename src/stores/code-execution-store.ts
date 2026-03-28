@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { supportedLanguages } from "@/lib/supported-languages";
-import { SubmissionOutput } from "@/lib/types";
+import { SubmissionOutput, SupportedLanguage } from "@/lib/types";
 
 type CodeExecutionState = {
 	code: string;
@@ -14,7 +14,7 @@ type CodeExecutionActions = {
 	setStdIn: (stdIn: string) => void;
 	setOutput: (output: SubmissionOutput | null) => void;
 	setIsSubmitting: (isSubmitting: boolean) => void;
-	resetCodeToBoilerplate: (language: string) => void;
+	resetCodeToBoilerplate: (language: SupportedLanguage) => void;
 };
 
 // Get initial code based on persisted language
@@ -57,12 +57,8 @@ const useCodeExecutionStore = create<
 		setStdIn: (stdIn) => set({ stdIn }),
 		setOutput: (output) => set({ output }),
 		setIsSubmitting: (isSubmitting) => set({ isSubmitting }),
-		resetCodeToBoilerplate: (language: string) => {
-			const boilerplate =
-				(supportedLanguages[language as keyof typeof supportedLanguages]
-					?.boilerplate as string) || "";
-			set({ code: boilerplate });
-		},
+		resetCodeToBoilerplate: (language) =>
+			set({ code: supportedLanguages[language]?.boilerplate ?? "" }),
 	},
 }));
 
