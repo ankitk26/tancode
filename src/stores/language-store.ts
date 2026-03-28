@@ -14,7 +14,7 @@ type LanguageActions = {
 // Store is not exported to prevent direct subscription
 const useLanguageStore = create<LanguageState & { actions: LanguageActions }>()(
 	persist(
-		(set, get) => ({
+		(set, _) => ({
 			language: "cpp17",
 			actions: {
 				setLanguage: (language) => {

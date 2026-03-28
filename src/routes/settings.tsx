@@ -1,5 +1,4 @@
-"use client";
-
+import { createFileRoute } from "@tanstack/react-router";
 import FontSizeInput from "@/components/font-size-input";
 import Preview from "@/components/preview";
 import { Label } from "@/components/ui/label";
@@ -11,7 +10,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { fonts, shikiThemes } from "@/lib/constants";
+import { shikiThemes, fonts } from "@/lib/constants";
 import {
 	useEditorTheme,
 	useEditorFontFamily,
@@ -22,7 +21,11 @@ import {
 	useEditorSettingsActions,
 } from "@/stores/editor-settings-store";
 
-export default function Settings() {
+export const Route = createFileRoute("/settings")({
+	component: SettingsPage,
+});
+
+function SettingsPage() {
 	const theme = useEditorTheme();
 	const fontFamily = useEditorFontFamily();
 	const wrap = useEditorWrap();

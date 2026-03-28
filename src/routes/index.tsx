@@ -1,10 +1,13 @@
-"use client";
-
+import { createFileRoute } from "@tanstack/react-router";
 import ProgrammingEditor from "@/components/programming-editor";
 import WebD from "@/components/web-d";
 import { useLanguage } from "@/stores/language-store";
 
-export default function Page() {
+export const Route = createFileRoute("/")({
+	component: Home,
+});
+
+function Home() {
 	const language = useLanguage();
 
 	return (
