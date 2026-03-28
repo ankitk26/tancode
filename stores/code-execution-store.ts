@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { supportedLanguages } from "@/lib/supported-languages";
 import { SubmissionOutput } from "@/lib/types";
 
@@ -17,11 +18,35 @@ type CodeExecutionActions = {
 	resetCodeToBoilerplate: (language: string) => void;
 };
 
+// Get initial code based on persisted language
+const getInitialCode = () => {
+	if (typeof window === "undefined")
+		return supportedLanguages["cpp17"].boilerplate;
+	const persistedLanguage = localStorage.getItem("next-pen-language");
+	if (persistedLanguage) {
+		try {
+			const parsed = JSON.parse(persistedLanguage);
+			const lang = parsed?.state?.language;
+			if (
+				lang &&
+				supportedLanguages[lang as keyof typeof supportedLanguages]
+			) {
+				return supportedLanguages[
+					lang as keyof typeof supportedLanguages
+				].boilerplate;
+			}
+		} catch {
+			// Ignore parse errors
+		}
+	}
+	return supportedLanguages["cpp17"].boilerplate;
+};
+
 // Store is not exported to prevent direct subscription
 const useCodeExecutionStore = create<
 	CodeExecutionState & { actions: CodeExecutionActions }
 >()((set) => ({
-	code: supportedLanguages["cpp17"].boilerplate,
+	code: getInitialCode(),
 	stdIn: "",
 	output: null,
 	isSubmitting: false,
