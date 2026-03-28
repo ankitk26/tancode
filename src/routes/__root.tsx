@@ -1,34 +1,13 @@
 /// <reference types="vite/client" />
-import { createRootRoute, HeadContent, Outlet } from "@tanstack/react-router";
+import {
+	createRootRoute,
+	HeadContent,
+	Outlet,
+	Scripts,
+} from "@tanstack/react-router";
 import Header from "@/components/header";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import appCss from "@/styles/app.css?url";
-
-// const jetbrainsMono = JetBrains_Mono({
-//   variable: "--font-jetbrains",
-//   subsets: ["latin"],
-// });
-
-// const firaCode = Fira_Code({
-//   variable: "--font-fira",
-//   subsets: ["latin"],
-// });
-
-// const sourceCodePro = Source_Code_Pro({
-//   variable: "--font-source",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist",
-//   subsets: ["latin"],
-// });
-
-// const courierPrime = Courier_Prime({
-//   variable: "--font-courier",
-//   weight: ["400", "700"],
-//   subsets: ["latin"],
-// });
 
 export const Route = createRootRoute({
 	head: () => ({
@@ -60,10 +39,7 @@ function RootComponent() {
 
 function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
 	return (
-		<html
-			lang="en"
-			// className={`${jetbrainsMono.variable} ${firaCode.variable} ${sourceCodePro.variable} ${geistMono.variable} ${courierPrime.variable}`}
-		>
+		<html lang="en">
 			<head>
 				<HeadContent />
 			</head>
@@ -76,6 +52,7 @@ function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
 						</main>
 					</div>
 				</TooltipProvider>
+				<Scripts />
 			</body>
 		</html>
 	);
