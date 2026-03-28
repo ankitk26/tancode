@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import { supportedLanguages } from "@/lib/supported-languages";
 import { SubmissionOutput } from "@/lib/types";
 

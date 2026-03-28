@@ -1,5 +1,3 @@
-"use client";
-
 import { compilerLanguages } from "@/lib/supported-languages";
 import { useCodeExecutionActions } from "@/stores/code-execution-store";
 import { useLanguageActions } from "@/stores/language-store";
