@@ -21,6 +21,9 @@ const applyDarkModeClass = (mode: ThemeMode) => {
 	}
 };
 
+// Apply default mode immediately during initialization
+applyDarkModeClass("dark");
+
 // Store is not exported to prevent direct subscription
 const useThemeStore = create<ThemeState & { actions: ThemeActions }>()(
 	persist(
@@ -41,6 +44,7 @@ const useThemeStore = create<ThemeState & { actions: ThemeActions }>()(
 		}),
 		{
 			name: "next-pen-theme",
+			partialize: (state) => ({ mode: state.mode }),
 			onRehydrateStorage: () => (state) => {
 				if (state) {
 					applyDarkModeClass(state.mode);
