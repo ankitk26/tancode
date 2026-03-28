@@ -14,6 +14,10 @@ import CodeOutput from "./code-output";
 import CompileButton from "./compile-button";
 import Editor from "./editor";
 
+function isCompilerLanguage(language: string): language is CompilerLanguage {
+	return language !== "webd";
+}
+
 export default function ProgrammingEditor() {
 	const language = useLanguage();
 	const code = useCodeExecutionCode();
@@ -23,9 +27,7 @@ export default function ProgrammingEditor() {
 	const submitCodeFn = useServerFn(submitCodeServerFn);
 
 	const submitCode = useCallback(async () => {
-		if (isSubmitting || language === "webd") return;
-
-		const compilerLanguage: CompilerLanguage = language;
+		if (isSubmitting || !isCompilerLanguage(language)) return;
 
 		setIsSubmitting(true);
 
@@ -34,7 +36,7 @@ export default function ProgrammingEditor() {
 				data: {
 					script: code,
 					stdin: stdIn,
-					language: compilerLanguage,
+					language,
 				},
 			});
 			setOutput({
@@ -74,22 +76,17 @@ export default function ProgrammingEditor() {
 
 	return (
 		<div className="flex h-full min-h-0 flex-col gap-4 overflow-hidden lg:flex-row">
-			{/* Left side - Code Editor */}
 			<section className="h-[400px] min-h-0 min-w-0 lg:h-full lg:flex-1">
 				<Editor language={language} code={code} setCode={setCode} />
 			</section>
 
-			{/* Right side - Input/Output */}
 			<div className="flex min-h-0 min-w-0 flex-col gap-4 lg:w-[400px] xl:w-[450px]">
-				{/* Input Section */}
 				<section className="flex min-h-[150px] flex-1 flex-col">
 					<CodeInput />
 				</section>
 
-				{/* Compile Button */}
 				<CompileButton onRun={submitCode} isSubmitting={isSubmitting} />
 
-				{/* Output Section */}
 				<section className="flex min-h-[200px] flex-[2] flex-col">
 					<CodeOutput />
 				</section>

@@ -12,17 +12,12 @@ type LanguageActions = {
 	getBoilerplateCode: (lang: SupportedLanguage) => string;
 };
 
-// Store is not exported to prevent direct subscription
 const useLanguageStore = create<LanguageState & { actions: LanguageActions }>()(
 	persist(
-		(set, _) => ({
+		(set) => ({
 			language: "cpp17",
 			actions: {
-				setLanguage: (language) => {
-					set({ language });
-					// Note: Cross-store communication should be handled by the component
-					// or via an event bus pattern, not directly in the store
-				},
+				setLanguage: (language) => set({ language }),
 				getBoilerplateCode: (lang) =>
 					supportedLanguages[lang]?.boilerplate ?? "",
 			},
@@ -33,7 +28,6 @@ const useLanguageStore = create<LanguageState & { actions: LanguageActions }>()(
 	),
 );
 
-// Atomic selectors - export only these
 export const useLanguage = () => useLanguageStore((state) => state.language);
 export const useLanguageActions = () =>
 	useLanguageStore((state) => state.actions);
