@@ -1,4 +1,7 @@
+import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect } from "react";
+import { submitCode as submitCodeServerFn } from "@/lib/submit-code";
+import { CompilerLanguage } from "@/lib/types";
 import {
 	useCodeExecutionCode,
 	useCodeExecutionStdIn,
@@ -17,28 +20,23 @@ export default function ProgrammingEditor() {
 	const stdIn = useCodeExecutionStdIn();
 	const isSubmitting = useCodeExecutionIsSubmitting();
 	const { setCode, setOutput, setIsSubmitting } = useCodeExecutionActions();
+	const submitCodeFn = useServerFn(submitCodeServerFn);
 
 	const submitCode = useCallback(async () => {
-		if (isSubmitting) return;
+		if (isSubmitting || language === "webd") return;
+
+		const compilerLanguage: CompilerLanguage = language;
 
 		setIsSubmitting(true);
 
 		try {
-			const body = JSON.stringify({
-				script: code,
-				stdin: stdIn,
-				language,
-			});
-
-			const submissionResponse = await fetch("/api/submission", {
-				method: "post",
-				body,
-				headers: {
-					"content-type": "application/json",
+			const submissionData = await submitCodeFn({
+				data: {
+					script: code,
+					stdin: stdIn,
+					language: compilerLanguage,
 				},
 			});
-
-			const submissionData = await submissionResponse.json();
 			setOutput({
 				output: submissionData.output,
 				isExecutionSuccess: submissionData.isExecutionSuccess,
@@ -49,7 +47,15 @@ export default function ProgrammingEditor() {
 		} finally {
 			setIsSubmitting(false);
 		}
-	}, [code, language, stdIn, setOutput, setIsSubmitting, isSubmitting]);
+	}, [
+		code,
+		language,
+		stdIn,
+		setOutput,
+		setIsSubmitting,
+		isSubmitting,
+		submitCodeFn,
+	]);
 
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
