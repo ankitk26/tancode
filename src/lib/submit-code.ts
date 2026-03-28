@@ -8,23 +8,26 @@ type SubmitCodeInput = {
 	language: CompilerLanguage;
 };
 
+function getJdoodlePayload(data: SubmitCodeInput) {
+	const { value: languageCode, jdoodleVersionIndex } =
+		compilerLanguages[data.language];
+
+	return {
+		...data,
+		language: languageCode,
+		versionIndex: jdoodleVersionIndex,
+		clientId: process.env.JDOODLE_CLIENT_ID,
+		clientSecret: process.env.JDOODLE_CLIENT_SECRET,
+	};
+}
+
 export const submitCode = createServerFn({ method: "POST" })
 	.inputValidator((data: SubmitCodeInput) => data)
 	.handler(async ({ data }): Promise<SubmissionOutput> => {
-		const { value: languageCode, jdoodleVersionIndex } =
-			compilerLanguages[data.language];
-
-		const inputParams = {
-			...data,
-			language: languageCode,
-			versionIndex: jdoodleVersionIndex,
-			clientId: process.env.JDOODLE_CLIENT_ID,
-			clientSecret: process.env.JDOODLE_CLIENT_SECRET,
-		};
-
 		const response = await fetch("https://api.jdoodle.com/v1/execute", {
 			method: "post",
-			body: JSON.stringify(inputParams),
+			// The browser sends editor state to this server fn; credentials are added here.
+			body: JSON.stringify(getJdoodlePayload(data)),
 			headers: { "content-type": "application/json" },
 		});
 

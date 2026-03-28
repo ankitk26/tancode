@@ -11,6 +11,12 @@ import {
 	SelectValue,
 } from "./ui/select";
 
+function isCompilerLanguage(
+	language: AppLanguage,
+): language is CompilerLanguage {
+	return language !== "webd";
+}
+
 export default function LanguageMenu() {
 	const { setLanguage } = useLanguageActions();
 	const { resetCodeToBoilerplate } = useCodeExecutionActions();
@@ -21,11 +27,12 @@ export default function LanguageMenu() {
 
 	const handleLanguageChange = (val: string | null) => {
 		if (!val) return;
+
 		const language = val as AppLanguage;
 		setLanguage(language);
-		// Reset code to boilerplate when language changes
-		if (language !== "webd") {
-			resetCodeToBoilerplate(language as CompilerLanguage);
+
+		if (isCompilerLanguage(language)) {
+			resetCodeToBoilerplate(language);
 		}
 	};
 
