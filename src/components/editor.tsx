@@ -1,4 +1,4 @@
-import Editor, { useMonaco } from "@monaco-editor/react";
+import Editor, { loader } from "@monaco-editor/react";
 import { shikiToMonaco } from "@shikijs/monaco";
 import { useEffect, useRef, useState } from "react";
 import { createHighlighter } from "shiki";
@@ -41,7 +41,6 @@ const highlighterPromise = createHighlighter({
 });
 
 export default function CodeEditor({ language, code, setCode }: Props) {
-	const monaco = useMonaco();
 	const theme = useEditorTheme();
 	const fontFamily = useEditorFontFamily();
 	const fontSize = useEditorFontSize();
@@ -49,6 +48,8 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 	const showLineNumbers = useEditorShowLineNumbers();
 	const minimap = useEditorMinimap();
 	const vimMode = useEditorVimMode();
+	const [monaco, setMonaco] = useState<any>(null);
+	const [loaderConfigured, setLoaderConfigured] = useState(false);
 	const [themesRegistered, setThemesRegistered] = useState(false);
 	const vimModeRef = useRef<any>(null);
 	const editorRef = useRef<any>(null);
@@ -57,6 +58,34 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 	const monacoLanguage =
 		supportedLanguages[language as SupportedLanguage]?.monacoLanguage ||
 		language;
+
+	useEffect(() => {
+		let cancelled = false;
+
+		const configureMonacoLoader = async () => {
+			const monacoEditor = await import("monaco-editor");
+			if (cancelled) return;
+
+			loader.config({ monaco: monacoEditor });
+			setLoaderConfigured(true);
+
+			const monacoInstance = await loader.init();
+			if (cancelled) {
+				monacoInstance.cancel?.();
+				return;
+			}
+
+			setMonaco(monacoInstance);
+		};
+
+		configureMonacoLoader().catch((error) => {
+			console.error("Monaco setup failed", error);
+		});
+
+		return () => {
+			cancelled = true;
+		};
+	}, []);
 
 	const handleEditorMount = (editor: any) => {
 		editorRef.current = editor;
@@ -125,32 +154,40 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 
 	return (
 		<div className="flex h-full grow flex-col overflow-hidden border border-border">
-			<div className="min-h-0 flex-1">
-				<Editor
-					key={`${monacoLanguage}-${theme}-${themesRegistered}`}
-					language={monacoLanguage}
-					value={code}
-					theme={theme}
-					onChange={(value) => setCode(value || "")}
-					onMount={handleEditorMount}
-					loading={
-						<div className="dark absolute inset-0 flex items-center justify-center bg-background">
-							<span className="font-mono text-lg text-foreground">
-								Loading
-							</span>
-						</div>
-					}
-					options={{
-						fontSize: fontSize,
-						fontFamily: fontFamily,
-						wordWrap: wrap ? "on" : "off",
-						lineNumbers: showLineNumbers ? "on" : "off",
-						scrollBeyondLastLine: false,
-						minimap: { enabled: minimap },
-						automaticLayout: true,
-						matchBrackets: "never",
-					}}
-				/>
+			<div className="relative min-h-0 flex-1">
+				{loaderConfigured ? (
+					<Editor
+						key={`${monacoLanguage}-${theme}-${themesRegistered}`}
+						language={monacoLanguage}
+						value={code}
+						theme={theme}
+						onChange={(value) => setCode(value || "")}
+						onMount={handleEditorMount}
+						loading={
+							<div className="dark absolute inset-0 flex items-center justify-center bg-background">
+								<span className="font-mono text-lg text-foreground">
+									Loading
+								</span>
+							</div>
+						}
+						options={{
+							fontSize: fontSize,
+							fontFamily: fontFamily,
+							wordWrap: wrap ? "on" : "off",
+							lineNumbers: showLineNumbers ? "on" : "off",
+							scrollBeyondLastLine: false,
+							minimap: { enabled: minimap },
+							automaticLayout: true,
+							matchBrackets: "never",
+						}}
+					/>
+				) : (
+					<div className="dark absolute inset-0 flex items-center justify-center bg-background">
+						<span className="font-mono text-lg text-foreground">
+							Loading
+						</span>
+					</div>
+				)}
 			</div>
 			{/* Vim status bar - only visible when vim mode is enabled */}
 			<div
