@@ -1,6 +1,7 @@
 import { IconCheck, IconCopy } from "@tabler/icons-react";
 import { useState } from "react";
 import { useCodeExecutionOutput } from "@/stores/code-execution-store";
+import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 
 export default function CodeOutput() {
@@ -21,14 +22,14 @@ export default function CodeOutput() {
 		<div className="flex h-full flex-col space-y-1">
 			<div className="flex items-center justify-between">
 				<h6 className="text-sm font-medium">Output</h6>
-				<button
+				<Button
 					type="button"
 					onClick={handleCopy}
-					className="rounded p-1 transition-colors hover:bg-muted"
-					aria-label="Copy output"
+					size="icon-sm"
+					variant="ghost"
 				>
 					{copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
-				</button>
+				</Button>
 			</div>
 			<Textarea
 				className="min-h-[150px] w-full flex-1 resize-none"

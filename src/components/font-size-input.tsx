@@ -5,7 +5,7 @@ import {
 	useEditorSettingsActions,
 } from "@/stores/editor-settings-store";
 
-const FontSizeInput = () => {
+export default function FontSizeInput() {
 	const fontSize = useEditorFontSize();
 	const { setFontSize } = useEditorSettingsActions();
 
@@ -30,6 +30,4 @@ const FontSizeInput = () => {
 			</Button>
 		</div>
 	);
-};
-
-export default FontSizeInput;
+}

@@ -9,6 +9,7 @@
         "@monaco-editor/react": "^4.7.0",
         "@shikijs/monaco": "^4.0.2",
         "@tabler/icons-react": "^3.41.0",
+        "@tanstack/react-hotkeys": "^0.8.4",
         "@tanstack/react-router": "^1.168.7",
         "@tanstack/react-start": "^1.167.12",
         "class-variance-authority": "^0.7.1",
@@ -359,6 +360,10 @@
     "@tailwindcss/vite": ["@tailwindcss/vite@4.2.2", "", { "dependencies": { "@tailwindcss/node": "4.2.2", "@tailwindcss/oxide": "4.2.2", "tailwindcss": "4.2.2" }, "peerDependencies": { "vite": "^5.2.0 || ^6 || ^7 || ^8" } }, "sha512-mEiF5HO1QqCLXoNEfXVA1Tzo+cYsrqV7w9Juj2wdUFyW07JRenqMG225MvPwr3ZD9N1bFQj46X7r33iHxLUW0w=="],
 
     "@tanstack/history": ["@tanstack/history@1.161.6", "", {}, "sha512-NaOGLRrddszbQj9upGat6HG/4TKvXLvu+osAIgfxPYA+eIvYKv8GKDJOrY2D3/U9MRnKfMWD7bU4jeD4xmqyIg=="],
+
+    "@tanstack/hotkeys": ["@tanstack/hotkeys@0.6.4", "", { "dependencies": { "@tanstack/store": "^0.9.3" } }, "sha512-acTerZZzUI8UDhW8NZWyRVjZD85tP9ercsu73TfhgUMCoFxFuZReSZifiCYH+E7yqUm5H6BgLwfd2bLEOChkSw=="],
+
+    "@tanstack/react-hotkeys": ["@tanstack/react-hotkeys@0.8.4", "", { "dependencies": { "@tanstack/hotkeys": "0.6.4", "@tanstack/react-store": "^0.9.3" }, "peerDependencies": { "react": ">=16.8", "react-dom": ">=16.8" } }, "sha512-do8r6qlSyyl3dYcAkaBGpUcAfeyMscIPecBxAqxS6oVf7jiDHKQ7n5tdSvIwEZelBilDUSgz5xWa8atGmDGsFw=="],
 
     "@tanstack/react-router": ["@tanstack/react-router@1.168.7", "", { "dependencies": { "@tanstack/history": "1.161.6", "@tanstack/react-store": "^0.9.3", "@tanstack/router-core": "1.168.6", "isbot": "^5.1.22" }, "peerDependencies": { "react": ">=18.0.0 || >=19.0.0", "react-dom": ">=18.0.0 || >=19.0.0" } }, "sha512-fW/HvQja4PQeu9lsoyh+pXpZ0UXezbpQkkJvCuH6tHAaW3jvPkjh14lfadrNNiY+pXT7WiMTB3afGhTCC78PDQ=="],
 
