@@ -1,7 +1,8 @@
-import { IconMoon, IconSettings, IconSun } from "@tabler/icons-react";
+import { IconMoon, IconSun } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { useTheme } from "better-themes";
 import LanguageMenu from "./language-menu";
+import SettingsDialog from "./settings-dialog";
 import { Button } from "./ui/button";
 
 export default function Header() {
@@ -29,11 +30,7 @@ export default function Header() {
 					<LanguageMenu />
 
 					{/* Opens settings modal */}
-					<Link to="/settings">
-						<Button size="icon">
-							<IconSettings />
-						</Button>
-					</Link>
+					<SettingsDialog />
 
 					{/* Theme toggler */}
 					<Button size="icon" variant="outline" onClick={toggleTheme}>
