@@ -5,6 +5,7 @@ import {
 	Outlet,
 	Scripts,
 } from "@tanstack/react-router";
+import { ThemeProvider } from "better-themes";
 import Header from "@/components/header";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import appCss from "@/styles/app.css?url";
@@ -44,14 +45,20 @@ function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
 				<HeadContent />
 			</head>
 			<body className="antialiased">
-				<TooltipProvider>
-					<div className="flex h-screen w-full flex-col overflow-hidden">
-						<Header />
-						<main className="min-h-0 w-full flex-1 overflow-hidden p-4">
-							{children}
-						</main>
-					</div>
-				</TooltipProvider>
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="dark"
+					disableTransitionOnChange
+				>
+					<TooltipProvider>
+						<div className="flex h-screen w-full flex-col overflow-hidden">
+							<Header />
+							<main className="min-h-0 w-full flex-1 overflow-hidden p-4">
+								{children}
+							</main>
+						</div>
+					</TooltipProvider>
+				</ThemeProvider>
 				<Scripts />
 			</body>
 		</html>

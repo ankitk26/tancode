@@ -1,12 +1,19 @@
 import { IconMoon, IconSettings, IconSun } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
-import { useThemeMode, useThemeActions } from "@/stores/theme-store";
+import { useTheme } from "better-themes";
 import LanguageMenu from "./language-menu";
 import { Button } from "./ui/button";
 
 export default function Header() {
-	const mode = useThemeMode();
-	const { toggleMode } = useThemeActions();
+	const { theme, setTheme } = useTheme();
+
+	const toggleTheme = () => {
+		if (theme === "dark") {
+			setTheme("light");
+		} else {
+			setTheme("dark");
+		}
+	};
 
 	return (
 		<nav className="shrink-0 px-4 py-2 shadow-md">
@@ -29,8 +36,8 @@ export default function Header() {
 					</Link>
 
 					{/* Theme toggler */}
-					<Button size="icon" variant="outline" onClick={toggleMode}>
-						{mode === "dark" ? <IconSun /> : <IconMoon />}
+					<Button size="icon" variant="outline" onClick={toggleTheme}>
+						{theme === "dark" ? <IconSun /> : <IconMoon />}
 					</Button>
 				</div>
 			</header>
