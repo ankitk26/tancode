@@ -1,4 +1,4 @@
-# nextpen
+# tancode
 
 A simple online code editor where you can write and run code in a few programming languages, or play around with HTML, CSS, and JavaScript with a live preview.
 
@@ -33,19 +33,19 @@ A simple online code editor where you can write and run code in a few programmin
 
 ## Tech Stack
 
-- Next.js 16 App router
-- React 19
+- TanStack Start
 - TypeScript
 - Tailwind CSS
-- shadcn/ui
+- Shadcn/ui
 - Monaco Editor (@monaco-editor/react)
+- Shiki (syntax highlighting)
 - Zustand (state management)
 
 ## Installation
 
 ### Prerequisites
 
-- Node.js 18+
+- Node
 - Git
 
 ### Setup
@@ -53,8 +53,8 @@ A simple online code editor where you can write and run code in a few programmin
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/ankitk26/nextpen.git
-    cd nextpen
+    git clone https://github.com/ankitk26/tancode.git
+    cd tancode
     ```
 
 2. Install dependencies:
@@ -94,7 +94,7 @@ A simple online code editor where you can write and run code in a few programmin
 
 ### Programming Mode
 
-1. Select a language from the dropdown (C, C++, Java, or Python)
+1. Select a language from the dropdown (C, C++, C#, Java, Python, JavaScript, TypeScript, Go, Rust, or Elixir)
 2. Write your code in the editor
 3. Enter input if your program needs it
 4. Click "Run" to execute
@@ -108,5 +108,5 @@ A simple online code editor where you can write and run code in a few programmin
 
 ## Support
 
-- Issues: [GitHub Issues](https://github.com/ankitk26/nextpen/issues)
-- Repository: [GitHub](https://github.com/ankitk26/nextpen)
+- Issues: [GitHub Issues](https://github.com/ankitk26/tancode/issues)
+- Repository: [GitHub](https://github.com/ankitk26/tancode)

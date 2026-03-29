@@ -13,7 +13,7 @@ export default function Header() {
 			<header className="flex w-full items-center justify-between">
 				{/* Logo */}
 				<Link to="/" className="text-lg font-medium">
-					nextpen
+					tancode
 				</Link>
 
 				{/* Navigation buttons */}
