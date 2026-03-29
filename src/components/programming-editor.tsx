@@ -1,3 +1,4 @@
+import { useHotkey } from "@tanstack/react-hotkeys";
 import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect } from "react";
 import { submitCode as submitCodeServerFn } from "@/lib/submit-code";
@@ -73,6 +74,12 @@ export default function ProgrammingEditor() {
 		window.addEventListener("keydown", handleKeyDown, true);
 		return () => window.removeEventListener("keydown", handleKeyDown, true);
 	}, [submitCode]);
+
+	useHotkey("Mod+Enter", (event) => {
+		event.stopPropagation();
+		event.preventDefault();
+		submitCode();
+	});
 
 	return (
 		<div className="flex h-full min-h-0 flex-col gap-4 overflow-hidden lg:flex-row">

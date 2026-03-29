@@ -21,18 +21,24 @@ type Props = {
 	setCode: React.Dispatch<React.SetStateAction<string>>;
 };
 
+// Type representing the initialized Monaco editor instance
 type MonacoInstance = Awaited<ReturnType<typeof loader.init>>;
 
+// Loading screen shown while Monaco editor is initializing
 const loadingOverlay = (
 	<div className="dark absolute inset-0 flex items-center justify-center bg-background">
 		<span className="font-mono text-lg text-foreground">Loading</span>
 	</div>
 );
 
+// Maps the language prop to Monaco's language identifier
+// Falls back to the input language if no mapping exists
 const getMonacoLanguage = (language: string) =>
 	supportedLanguages[language as SupportedLanguage]?.monacoLanguage ||
 	language;
 
+// Pre-create the Shiki highlighter with all supported themes and languages
+// This promise is reused to avoid creating multiple highlighter instances
 const highlighterPromise = createHighlighter({
 	themes: shikiThemes.map((t: { value: string; label: string }) => t.value),
 	langs: [
@@ -51,10 +57,12 @@ const highlighterPromise = createHighlighter({
 	],
 });
 
+// Enables Vim mode on the editor instance
+// Dynamically imports monaco-vim only when needed
 async function enableVimMode(
 	editor: any,
 	statusBar: HTMLDivElement | null,
-	vimModeRef: React.MutableRefObject<any>,
+	vimModeRef: React.RefObject<any>,
 ) {
 	if (vimModeRef.current) return;
 
@@ -62,27 +70,37 @@ async function enableVimMode(
 	vimModeRef.current = initVimMode(editor, statusBar);
 }
 
-function disableVimMode(vimModeRef: React.MutableRefObject<any>) {
+// Disables Vim mode and cleans up the vim mode instance
+function disableVimMode(vimModeRef: React.RefObject<any>) {
 	vimModeRef.current?.dispose();
 	vimModeRef.current = null;
 }
 
 export default function CodeEditor({ language, code, setCode }: Props) {
-	const theme = useEditorTheme();
+	// Editor settings from the global store
+	const editorTheme = useEditorTheme();
 	const fontFamily = useEditorFontFamily();
 	const fontSize = useEditorFontSize();
 	const wrap = useEditorWrap();
 	const showLineNumbers = useEditorShowLineNumbers();
 	const minimap = useEditorMinimap();
 	const vimMode = useEditorVimMode();
+
+	// State for Monaco initialization
 	const [monaco, setMonaco] = useState<MonacoInstance | null>(null);
 	const [loaderConfigured, setLoaderConfigured] = useState(false);
 	const [themesRegistered, setThemesRegistered] = useState(false);
+
+	// Refs for managing Vim mode and editor instance
 	const vimModeRef = useRef<any>(null);
 	const editorRef = useRef<any>(null);
 	const vimStatusBarRef = useRef<HTMLDivElement>(null);
+
+	// Get the Monaco-compatible language identifier
 	const monacoLanguage = getMonacoLanguage(language);
 
+	// Effect: Initialize Monaco editor loader on mount
+	// Configures the Monaco loader and initializes the editor instance
 	useEffect(() => {
 		let cancelled = false;
 
@@ -91,9 +109,11 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 			const monacoEditor = await import("monaco-editor");
 			if (cancelled) return;
 
+			// Configure the loader with the Monaco editor instance
 			loader.config({ monaco: monacoEditor });
 			setLoaderConfigured(true);
 
+			// Initialize Monaco and get the instance
 			const monacoInstance = await loader.init();
 			if (cancelled) {
 				monacoInstance.cancel?.();
@@ -107,11 +127,14 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 			console.error("Monaco setup failed", error);
 		});
 
+		// Cleanup: Set cancelled flag to prevent state updates after unmount
 		return () => {
 			cancelled = true;
 		};
 	}, []);
 
+	// Callback when Monaco editor finishes mounting
+	// Stores editor reference and enables Vim mode if it's active
 	const handleEditorMount = (editor: any) => {
 		editorRef.current = editor;
 
@@ -124,6 +147,8 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 		}
 	};
 
+	// Effect: Toggle Vim mode when the vimMode setting changes
+	// Enables or disables Vim keybindings based on user preference
 	useEffect(() => {
 		const editor = editorRef.current;
 		if (!editor) return;
@@ -144,11 +169,14 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 			console.error("Failed to toggle Vim mode", error);
 		});
 
+		// Cleanup: Disable Vim mode when effect re-runs or component unmounts
 		return () => {
 			disableVimMode(vimModeRef);
 		};
 	}, [vimMode]);
 
+	// Effect: Register Shiki themes with Monaco once it's initialized
+	// Converts Shiki themes to Monaco-compatible format and applies them
 	useEffect(() => {
 		if (!monaco) return;
 
@@ -164,10 +192,10 @@ export default function CodeEditor({ language, code, setCode }: Props) {
 			<div className="relative min-h-0 flex-1">
 				{loaderConfigured ? (
 					<Editor
-						key={`${monacoLanguage}-${theme}-${themesRegistered}`}
+						key={`${monacoLanguage}-${editorTheme}-${themesRegistered}`}
 						language={monacoLanguage}
 						value={code}
-						theme={theme}
+						theme={editorTheme}
 						onChange={(value) => setCode(value || "")}
 						onMount={handleEditorMount}
 						loading={loadingOverlay}

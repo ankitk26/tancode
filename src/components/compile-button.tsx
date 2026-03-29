@@ -1,4 +1,5 @@
 import { IconLoader } from "@tabler/icons-react";
+import { formatForDisplay } from "@tanstack/react-hotkeys";
 import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
@@ -6,10 +7,6 @@ type Props = {
 	onRun: () => void;
 	isSubmitting: boolean;
 };
-
-const isMac =
-	typeof window !== "undefined" &&
-	/navigator\.platform|iPhone|iPad|iPod|Mac/i.test(navigator.platform);
 
 export default function CompileButton({ onRun, isSubmitting }: Props) {
 	return (
@@ -26,7 +23,7 @@ export default function CompileButton({ onRun, isSubmitting }: Props) {
 				{isSubmitting ? <IconLoader className="animate-spin" /> : "Run"}
 			</TooltipTrigger>
 			<TooltipContent side="top">
-				<p>Run code ({isMac ? "⌘" : "Ctrl"}+Enter)</p>
+				<p>Run code ({formatForDisplay("Mod+Enter")})</p>
 			</TooltipContent>
 		</Tooltip>
 	);
