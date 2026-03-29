@@ -8,8 +8,64 @@ import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Editor from "./editor";
 
+const defaultHtml = `<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body>
+    <h1 class="text-3xl font-bold text-red-500">
+      Hello world!
+    </h1>
+  </body>
+</html>`;
+
+const basePreviewStyles = `html, body {
+  margin: 0;
+  min-height: 100%;
+  background: white;
+}`;
+
+function buildPreviewDocument(html: string, css: string, js: string) {
+	const styleTag = `<style>${basePreviewStyles}${css ? `\n${css}` : ""}</style>`;
+	const scriptTag = js ? `<script>${js}</script>` : "";
+	const hasFullDocument = /<!doctype html|<html[\s>]/i.test(html);
+
+	if (hasFullDocument) {
+		let doc = html;
+
+		doc = /<\/head>/i.test(doc)
+			? doc.replace(/<\/head>/i, `${styleTag}\n  </head>`)
+			: doc.replace(
+					/<html[^>]*>/i,
+					(match) => `${match}\n<head>\n${styleTag}\n</head>`,
+				);
+
+		if (scriptTag) {
+			doc = /<\/body>/i.test(doc)
+				? doc.replace(/<\/body>/i, `${scriptTag}\n  </body>`)
+				: `${doc}\n${scriptTag}`;
+		}
+
+		return doc;
+	}
+
+	return `<!doctype html>
+<html>
+  <head>
+    ${styleTag}
+  </head>
+  <body>
+    ${html}
+    ${scriptTag}
+  </body>
+</html>`;
+}
+
 const WebD = () => {
-	const [html, setHtml] = useState("");
+	const [html, setHtml] = useState(defaultHtml);
 	const [css, setCss] = useState("");
 	const [js, setJs] = useState("");
 
@@ -17,19 +73,7 @@ const WebD = () => {
 
 	useEffect(() => {
 		const timeout = setTimeout(() => {
-			setSrcDoc(`
-        <html>
-        <head>
-        <style>${css}</style>
-        </head>
-        <body>
-        ${html}
-        <script>
-        ${js}
-        </script>
-        </body>
-        </html>
-        `);
+			setSrcDoc(buildPreviewDocument(html, css, js));
 		}, 250);
 
 		return () => clearTimeout(timeout);
@@ -95,16 +139,16 @@ const WebD = () => {
 			</div>
 
 			{/* Preview section - bottom on mobile, right on desktop */}
-			<div className="flex min-w-0 flex-1 flex-col bg-background lg:flex-1">
+			<div className="flex min-w-0 flex-1 flex-col bg-white lg:flex-1">
 				<div className="flex shrink-0 items-center gap-2 border-b border-border bg-muted px-4 py-3">
 					<IconEye className="size-4" />
 					<span className="text-sm font-medium">Preview</span>
 				</div>
-				<div className="min-h-0 flex-1 overflow-hidden">
+				<div className="min-h-0 flex-1 overflow-hidden bg-white">
 					<iframe
 						title="output"
 						sandbox="allow-scripts"
-						className="h-full w-full border-0"
+						className="h-full w-full border-0 bg-white"
 						srcDoc={srcDoc}
 					/>
 				</div>
