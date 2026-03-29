@@ -1,7 +1,5 @@
-"use client";
-
 import { IconMoon, IconSettings, IconSun } from "@tabler/icons-react";
-import Link from "next/link";
+import { Link } from "@tanstack/react-router";
 import { useThemeMode, useThemeActions } from "@/stores/theme-store";
 import LanguageMenu from "./language-menu";
 import { Button } from "./ui/button";
@@ -14,7 +12,7 @@ export default function Header() {
 		<nav className="shrink-0 px-4 py-2 shadow-md">
 			<header className="flex w-full items-center justify-between">
 				{/* Logo */}
-				<Link href="/" className="text-lg font-medium">
+				<Link to="/" className="text-lg font-medium">
 					nextpen
 				</Link>
 
@@ -24,7 +22,7 @@ export default function Header() {
 					<LanguageMenu />
 
 					{/* Opens settings modal */}
-					<Link href="/settings">
+					<Link to="/settings">
 						<Button size="icon">
 							<IconSettings />
 						</Button>

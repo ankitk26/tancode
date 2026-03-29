@@ -1,8 +1,7 @@
-"use client";
-
 import { compilerLanguages } from "@/lib/supported-languages";
+import { AppLanguage, CompilerLanguage } from "@/lib/types";
 import { useCodeExecutionActions } from "@/stores/code-execution-store";
-import { useLanguageActions } from "@/stores/language-store";
+import { useLanguage, useLanguageActions } from "@/stores/language-store";
 import {
 	Select,
 	SelectContent,
@@ -12,26 +11,43 @@ import {
 	SelectValue,
 } from "./ui/select";
 
+function isCompilerLanguage(
+	language: AppLanguage,
+): language is CompilerLanguage {
+	return language !== "webd";
+}
+
+const compilerLanguagesList = [
+	...Object.values(compilerLanguages).map(({ value, label }) => ({
+		value,
+		label,
+	})),
+	{ value: "webd", label: "Web Development" },
+] as const;
+
 export default function LanguageMenu() {
+	const selectedLanguage = useLanguage();
 	const { setLanguage } = useLanguageActions();
 	const { resetCodeToBoilerplate } = useCodeExecutionActions();
 
-	const compilerLanguagesList = Object.values(compilerLanguages).map(
-		({ value, label }) => ({ value, label }),
-	);
-
 	const handleLanguageChange = (val: string | null) => {
 		if (!val) return;
-		setLanguage(val);
-		// Reset code to boilerplate when language changes
-		resetCodeToBoilerplate(val);
+
+		const nextLanguage = val as AppLanguage;
+		if (nextLanguage === selectedLanguage) return;
+
+		setLanguage(nextLanguage);
+
+		if (isCompilerLanguage(nextLanguage)) {
+			resetCodeToBoilerplate(nextLanguage);
+		}
 	};
 
 	return (
 		<Select
 			items={compilerLanguagesList}
+			value={selectedLanguage}
 			onValueChange={handleLanguageChange}
-			defaultValue="cpp17"
 		>
 			<SelectTrigger className="w-48">
 				<SelectValue />
@@ -43,7 +59,6 @@ export default function LanguageMenu() {
 							{language.label}
 						</SelectItem>
 					))}
-					<SelectItem value="webd">Web Development</SelectItem>
 				</SelectGroup>
 			</SelectContent>
 		</Select>

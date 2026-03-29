@@ -1,6 +1,8 @@
-"use client";
-
+import { useHotkey } from "@tanstack/react-hotkeys";
+import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect } from "react";
+import { submitCode as submitCodeServerFn } from "@/lib/submit-code";
+import { CompilerLanguage } from "@/lib/types";
 import {
 	useCodeExecutionCode,
 	useCodeExecutionStdIn,
@@ -13,34 +15,31 @@ import CodeOutput from "./code-output";
 import CompileButton from "./compile-button";
 import Editor from "./editor";
 
+function isCompilerLanguage(language: string): language is CompilerLanguage {
+	return language !== "webd";
+}
+
 export default function ProgrammingEditor() {
 	const language = useLanguage();
 	const code = useCodeExecutionCode();
 	const stdIn = useCodeExecutionStdIn();
 	const isSubmitting = useCodeExecutionIsSubmitting();
 	const { setCode, setOutput, setIsSubmitting } = useCodeExecutionActions();
+	const submitCodeFn = useServerFn(submitCodeServerFn);
 
 	const submitCode = useCallback(async () => {
-		if (isSubmitting) return;
+		if (isSubmitting || !isCompilerLanguage(language)) return;
 
 		setIsSubmitting(true);
 
 		try {
-			const body = JSON.stringify({
-				script: code,
-				stdin: stdIn,
-				language,
-			});
-
-			const submissionResponse = await fetch("/api/submission", {
-				method: "post",
-				body,
-				headers: {
-					"content-type": "application/json",
+			const submissionData = await submitCodeFn({
+				data: {
+					script: code,
+					stdin: stdIn,
+					language,
 				},
 			});
-
-			const submissionData = await submissionResponse.json();
 			setOutput({
 				output: submissionData.output,
 				isExecutionSuccess: submissionData.isExecutionSuccess,
@@ -51,7 +50,15 @@ export default function ProgrammingEditor() {
 		} finally {
 			setIsSubmitting(false);
 		}
-	}, [code, language, stdIn, setOutput, setIsSubmitting, isSubmitting]);
+	}, [
+		code,
+		language,
+		stdIn,
+		setOutput,
+		setIsSubmitting,
+		isSubmitting,
+		submitCodeFn,
+	]);
 
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
@@ -68,24 +75,25 @@ export default function ProgrammingEditor() {
 		return () => window.removeEventListener("keydown", handleKeyDown, true);
 	}, [submitCode]);
 
+	useHotkey("Mod+Enter", (event) => {
+		event.stopPropagation();
+		event.preventDefault();
+		submitCode();
+	});
+
 	return (
 		<div className="flex h-full min-h-0 flex-col gap-4 overflow-hidden lg:flex-row">
-			{/* Left side - Code Editor */}
 			<section className="h-[400px] min-h-0 min-w-0 lg:h-full lg:flex-1">
 				<Editor language={language} code={code} setCode={setCode} />
 			</section>
 
-			{/* Right side - Input/Output */}
 			<div className="flex min-h-0 min-w-0 flex-col gap-4 lg:w-[400px] xl:w-[450px]">
-				{/* Input Section */}
 				<section className="flex min-h-[150px] flex-1 flex-col">
 					<CodeInput />
 				</section>
 
-				{/* Compile Button */}
 				<CompileButton onRun={submitCode} isSubmitting={isSubmitting} />
 
-				{/* Output Section */}
 				<section className="flex min-h-[200px] flex-[2] flex-col">
 					<CodeOutput />
 				</section>

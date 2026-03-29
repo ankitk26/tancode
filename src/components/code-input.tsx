@@ -4,6 +4,7 @@ import {
 	useCodeExecutionStdIn,
 	useCodeExecutionActions,
 } from "@/stores/code-execution-store";
+import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 
 export default function CodeInput() {
@@ -21,17 +22,17 @@ export default function CodeInput() {
 		<div className="flex h-full flex-col space-y-1">
 			<div className="flex items-center justify-between">
 				<h6 className="text-sm font-medium">Input</h6>
-				<button
+				<Button
 					type="button"
 					onClick={handleCopy}
-					className="rounded p-1 transition-colors hover:bg-muted"
-					aria-label="Copy input"
+					size="icon-sm"
+					variant="ghost"
 				>
-					{copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
-				</button>
+					{copied ? <IconCheck /> : <IconCopy />}
+				</Button>
 			</div>
 			<Textarea
-				className="min-h-[100px] w-full flex-1 resize-none"
+				className="min-h-25 w-full flex-1 resize-none"
 				value={stdIn}
 				onChange={(e) => setStdIn(e.target.value)}
 				spellCheck={false}

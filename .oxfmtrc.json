@@ -1,6 +1,6 @@
 {
 	"$schema": "./node_modules/oxfmt/configuration_schema.json",
-	"ignorePatterns": [],
+	"ignorePatterns": ["bun.lock", "./src/routeTree.gen.ts"],
 	"useTabs": true,
 	"tabWidth": 4,
 	"printWidth": 80,
@@ -8,7 +8,7 @@
 		"newlinesBetween": false
 	},
 	"sortTailwindcss": {
-		"stylesheet": "./app/app.css",
+		"stylesheet": "./src/styles/app.css",
 		"functions": ["clsx", "cn"]
 	}
 }

@@ -1,7 +1,6 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import { supportedLanguages } from "@/lib/supported-languages";
-import { SubmissionOutput } from "@/lib/types";
+import { SubmissionOutput, SupportedLanguage } from "@/lib/types";
 
 type CodeExecutionState = {
 	code: string;
@@ -15,34 +14,38 @@ type CodeExecutionActions = {
 	setStdIn: (stdIn: string) => void;
 	setOutput: (output: SubmissionOutput | null) => void;
 	setIsSubmitting: (isSubmitting: boolean) => void;
-	resetCodeToBoilerplate: (language: string) => void;
+	resetCodeToBoilerplate: (language: SupportedLanguage) => void;
 };
 
-// Get initial code based on persisted language
+function isSupportedLanguage(language: unknown): language is SupportedLanguage {
+	return typeof language === "string" && language in supportedLanguages;
+}
+
 const getInitialCode = () => {
 	if (typeof window === "undefined")
 		return supportedLanguages["cpp17"].boilerplate;
+
 	const persistedLanguage = localStorage.getItem("next-pen-language");
-	if (persistedLanguage) {
-		try {
-			const parsed = JSON.parse(persistedLanguage);
-			const lang = parsed?.state?.language;
-			if (
-				lang &&
-				supportedLanguages[lang as keyof typeof supportedLanguages]
-			) {
-				return supportedLanguages[
-					lang as keyof typeof supportedLanguages
-				].boilerplate;
-			}
-		} catch {
-			// Ignore parse errors
-		}
+
+	if (!persistedLanguage) {
+		return supportedLanguages["cpp17"].boilerplate;
 	}
+
+	try {
+		const parsed = JSON.parse(persistedLanguage);
+		const language = parsed?.state?.language;
+
+		// Ignore persisted values like "webd" and fall back to a runnable language.
+		if (isSupportedLanguage(language)) {
+			return supportedLanguages[language].boilerplate;
+		}
+	} catch {
+		// Ignore malformed localStorage state and keep the default boilerplate.
+	}
+
 	return supportedLanguages["cpp17"].boilerplate;
 };
 
-// Store is not exported to prevent direct subscription
 const useCodeExecutionStore = create<
 	CodeExecutionState & { actions: CodeExecutionActions }
 >()((set) => ({
@@ -58,16 +61,11 @@ const useCodeExecutionStore = create<
 		setStdIn: (stdIn) => set({ stdIn }),
 		setOutput: (output) => set({ output }),
 		setIsSubmitting: (isSubmitting) => set({ isSubmitting }),
-		resetCodeToBoilerplate: (language: string) => {
-			const boilerplate =
-				(supportedLanguages[language as keyof typeof supportedLanguages]
-					?.boilerplate as string) || "";
-			set({ code: boilerplate });
-		},
+		resetCodeToBoilerplate: (language) =>
+			set({ code: supportedLanguages[language]?.boilerplate ?? "" }),
 	},
 }));
 
-// Atomic selectors - export only these
 export const useCodeExecutionCode = () =>
 	useCodeExecutionStore((state) => state.code);
 export const useCodeExecutionStdIn = () =>
