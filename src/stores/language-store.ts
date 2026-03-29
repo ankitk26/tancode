@@ -5,13 +5,14 @@ import { AppLanguage, SupportedLanguage } from "@/lib/types";
 
 type LanguageState = {
 	language: AppLanguage;
-	actions: {
-		setLanguage: (language: AppLanguage) => void;
-		getBoilerplateCode: (lang: SupportedLanguage) => string;
-	};
 };
 
-const useLanguageStore = create<LanguageState>()(
+type LanguageActions = {
+	setLanguage: (language: AppLanguage) => void;
+	getBoilerplateCode: (lang: SupportedLanguage) => string;
+};
+
+const useLanguageStore = create<LanguageState & { actions: LanguageActions }>()(
 	persist(
 		(set) => ({
 			language: "cpp17",
@@ -24,6 +25,10 @@ const useLanguageStore = create<LanguageState>()(
 		{
 			name: "next-pen-language",
 			partialize: (state) => ({ language: state.language }),
+			merge: (persistedState, currentState) => ({
+				...currentState,
+				...(persistedState as Partial<LanguageState>),
+			}),
 		},
 	),
 );
