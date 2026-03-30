@@ -10,7 +10,7 @@ export default function FontSizeInput() {
 	const { setFontSize } = useEditorSettingsActions();
 
 	return (
-		<div className="flex w-32 items-center border border-input">
+		<div className="flex w-32 items-center gap-1 rounded-md border border-input bg-input/20 dark:bg-input/30">
 			<Button
 				variant="ghost"
 				size="icon"
