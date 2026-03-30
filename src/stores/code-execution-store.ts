@@ -1,73 +1,105 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { supportedLanguages } from "@/lib/supported-languages";
-import { SubmissionOutput, SupportedLanguage } from "@/lib/types";
+import {
+	CompilerLanguage,
+	SubmissionOutput,
+	SupportedLanguage,
+} from "@/lib/types";
+
+type CodeDrafts = Partial<Record<SupportedLanguage, string>>;
 
 type CodeExecutionState = {
-	code: string;
+	codeByLanguage: CodeDrafts;
 	stdIn: string;
 	output: SubmissionOutput | null;
 	isSubmitting: boolean;
 };
 
 type CodeExecutionActions = {
-	setCode: (code: string | ((prev: string) => string)) => void;
+	setCode: (
+		language: CompilerLanguage,
+		code: string | ((prev: string) => string),
+	) => void;
 	setStdIn: (stdIn: string) => void;
 	setOutput: (output: SubmissionOutput | null) => void;
 	setIsSubmitting: (isSubmitting: boolean) => void;
-	resetCodeToBoilerplate: (language: SupportedLanguage) => void;
+	ensureLanguageDraft: (language: CompilerLanguage) => void;
+	resetCodeToBoilerplate: (language: CompilerLanguage) => void;
 };
 
-function isSupportedLanguage(language: unknown): language is SupportedLanguage {
-	return typeof language === "string" && language in supportedLanguages;
+function getBoilerplate(language: SupportedLanguage) {
+	return supportedLanguages[language]?.boilerplate ?? "";
 }
-
-const getInitialCode = () => {
-	if (typeof window === "undefined")
-		return supportedLanguages["cpp17"].boilerplate;
-
-	const persistedLanguage = localStorage.getItem("next-pen-language");
-
-	if (!persistedLanguage) {
-		return supportedLanguages["cpp17"].boilerplate;
-	}
-
-	try {
-		const parsed = JSON.parse(persistedLanguage);
-		const language = parsed?.state?.language;
-
-		// Ignore persisted values like "webd" and fall back to a runnable language.
-		if (isSupportedLanguage(language)) {
-			return supportedLanguages[language].boilerplate;
-		}
-	} catch {
-		// Ignore malformed localStorage state and keep the default boilerplate.
-	}
-
-	return supportedLanguages["cpp17"].boilerplate;
-};
 
 const useCodeExecutionStore = create<
 	CodeExecutionState & { actions: CodeExecutionActions }
->()((set) => ({
-	code: getInitialCode(),
-	stdIn: "",
-	output: null,
-	isSubmitting: false,
-	actions: {
-		setCode: (code) =>
-			set((state) => ({
-				code: typeof code === "function" ? code(state.code) : code,
-			})),
-		setStdIn: (stdIn) => set({ stdIn }),
-		setOutput: (output) => set({ output }),
-		setIsSubmitting: (isSubmitting) => set({ isSubmitting }),
-		resetCodeToBoilerplate: (language) =>
-			set({ code: supportedLanguages[language]?.boilerplate ?? "" }),
-	},
-}));
+>()(
+	persist(
+		(set) => ({
+			codeByLanguage: {},
+			stdIn: "",
+			output: null,
+			isSubmitting: false,
+			actions: {
+				setCode: (language, code) =>
+					set((state) => {
+						const previousCode =
+							state.codeByLanguage[language] ??
+							getBoilerplate(language);
 
-export const useCodeExecutionCode = () =>
-	useCodeExecutionStore((state) => state.code);
+						return {
+							codeByLanguage: {
+								...state.codeByLanguage,
+								[language]:
+									typeof code === "function"
+										? code(previousCode)
+										: code,
+							},
+						};
+					}),
+				setStdIn: (stdIn) => set({ stdIn }),
+				setOutput: (output) => set({ output }),
+				setIsSubmitting: (isSubmitting) => set({ isSubmitting }),
+				ensureLanguageDraft: (language) =>
+					set((state) => {
+						if (state.codeByLanguage[language] !== undefined) {
+							return state;
+						}
+
+						return {
+							codeByLanguage: {
+								...state.codeByLanguage,
+								[language]: getBoilerplate(language),
+							},
+						};
+					}),
+				resetCodeToBoilerplate: (language) =>
+					set((state) => ({
+						codeByLanguage: {
+							...state.codeByLanguage,
+							[language]: getBoilerplate(language),
+						},
+					})),
+			},
+		}),
+		{
+			name: "tancode-code-execution",
+			partialize: (state) => ({
+				codeByLanguage: state.codeByLanguage,
+			}),
+			merge: (persistedState, currentState) => ({
+				...currentState,
+				...(persistedState as Partial<CodeExecutionState>),
+			}),
+		},
+	),
+);
+
+export const useCodeExecutionCode = (language: CompilerLanguage) =>
+	useCodeExecutionStore(
+		(state) => state.codeByLanguage[language] ?? getBoilerplate(language),
+	);
 export const useCodeExecutionStdIn = () =>
 	useCodeExecutionStore((state) => state.stdIn);
 export const useCodeExecutionOutput = () =>

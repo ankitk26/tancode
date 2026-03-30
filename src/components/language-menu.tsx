@@ -11,12 +11,6 @@ import {
 	SelectValue,
 } from "./ui/select";
 
-function isCompilerLanguage(
-	language: AppLanguage,
-): language is CompilerLanguage {
-	return language !== "webd";
-}
-
 const compilerLanguagesList = [
 	...Object.values(compilerLanguages).map(({ value, label }) => ({
 		value,
@@ -25,10 +19,16 @@ const compilerLanguagesList = [
 	{ value: "webd", label: "Web Development" },
 ] as const;
 
+function isCompilerLanguage(
+	language: AppLanguage,
+): language is CompilerLanguage {
+	return language !== "webd";
+}
+
 export default function LanguageMenu() {
 	const selectedLanguage = useLanguage();
 	const { setLanguage } = useLanguageActions();
-	const { resetCodeToBoilerplate } = useCodeExecutionActions();
+	const { ensureLanguageDraft } = useCodeExecutionActions();
 
 	const handleLanguageChange = (val: string | null) => {
 		if (!val) return;
@@ -36,11 +36,11 @@ export default function LanguageMenu() {
 		const nextLanguage = val as AppLanguage;
 		if (nextLanguage === selectedLanguage) return;
 
-		setLanguage(nextLanguage);
-
 		if (isCompilerLanguage(nextLanguage)) {
-			resetCodeToBoilerplate(nextLanguage);
+			ensureLanguageDraft(nextLanguage);
 		}
+
+		setLanguage(nextLanguage);
 	};
 
 	return (
