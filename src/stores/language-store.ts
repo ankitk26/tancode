@@ -23,7 +23,7 @@ const useLanguageStore = create<LanguageState & { actions: LanguageActions }>()(
 			},
 		}),
 		{
-			name: "next-pen-language",
+			name: "tancode-language",
 			partialize: (state) => ({ language: state.language }),
 			merge: (persistedState, currentState) => ({
 				...currentState,
