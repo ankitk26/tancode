@@ -26,8 +26,10 @@ type MonacoInstance = Awaited<ReturnType<typeof loader.init>>;
 
 // Loading screen shown while Monaco editor is initializing
 const loadingOverlay = (
-	<div className="absolute inset-0 flex items-center justify-center bg-muted">
-		<span className="font-mono text-lg text-muted-foreground">Loading</span>
+	<div className="absolute inset-0 flex items-center justify-center bg-secondary">
+		<span className="font-mono text-lg text-secondary-foreground">
+			Loading
+		</span>
 	</div>
 );
 
