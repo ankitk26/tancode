@@ -75,10 +75,6 @@ export default function SettingsDialog() {
 			<DialogContent className="flex h-fit min-w-0 flex-col bg-background sm:max-w-150">
 				<DialogHeader>
 					<DialogTitle>Editor Settings</DialogTitle>
-					<DialogDescription>
-						Tune the editor in one place and get back to work
-						immediately.
-					</DialogDescription>
 				</DialogHeader>
 
 				<ScrollArea className="min-h-0 flex-1">
