@@ -135,8 +135,8 @@
 	--radius-lg: var(--radius);
 	--radius-xl: calc(var(--radius) + 4px);
 
-	--font-mono: var(--font-geist);
-	--font-heading: var(--font-geist);
+	--font-mono: var(--font-jetbrains);
+	--font-heading: var(--font-jetbrains);
 
 	--radius-2xl: calc(var(--radius) * 1.8);
 	--radius-3xl: calc(var(--radius) * 2.2);
