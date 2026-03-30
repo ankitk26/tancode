@@ -21,14 +21,15 @@ function isCompilerLanguage(language: string): language is CompilerLanguage {
 
 export default function ProgrammingEditor() {
 	const language = useLanguage();
-	const code = useCodeExecutionCode();
 	const stdIn = useCodeExecutionStdIn();
 	const isSubmitting = useCodeExecutionIsSubmitting();
 	const { setCode, setOutput, setIsSubmitting } = useCodeExecutionActions();
 	const submitCodeFn = useServerFn(submitCodeServerFn);
+	const activeLanguage = isCompilerLanguage(language) ? language : null;
+	const code = useCodeExecutionCode(activeLanguage ?? "cpp17");
 
 	const submitCode = useCallback(async () => {
-		if (isSubmitting || !isCompilerLanguage(language)) return;
+		if (isSubmitting || !activeLanguage) return;
 
 		setIsSubmitting(true);
 
@@ -37,7 +38,7 @@ export default function ProgrammingEditor() {
 				data: {
 					script: code,
 					stdin: stdIn,
-					language,
+					language: activeLanguage,
 				},
 			});
 			setOutput({
@@ -51,8 +52,8 @@ export default function ProgrammingEditor() {
 			setIsSubmitting(false);
 		}
 	}, [
+		activeLanguage,
 		code,
-		language,
 		stdIn,
 		setOutput,
 		setIsSubmitting,
@@ -84,7 +85,14 @@ export default function ProgrammingEditor() {
 	return (
 		<div className="flex w-full flex-col gap-4 lg:h-full lg:min-h-0 lg:flex-row lg:overflow-hidden">
 			<section className="min-h-[400px] min-w-0 lg:h-full lg:min-h-0 lg:flex-1">
-				<Editor language={language} code={code} setCode={setCode} />
+				<Editor
+					language={language}
+					code={code}
+					setCode={(nextCode) => {
+						if (!activeLanguage) return;
+						setCode(activeLanguage, nextCode);
+					}}
+				/>
 			</section>
 
 			<div className="flex min-w-0 flex-col gap-4 lg:min-h-0 lg:w-[400px] xl:w-[450px]">
