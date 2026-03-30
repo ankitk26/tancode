@@ -1,5 +1,5 @@
 import { IconMoon, IconSun } from "@tabler/icons-react";
-import { Link } from "@tanstack/react-router";
+import { Link, useHydrated } from "@tanstack/react-router";
 import { useTheme } from "better-themes";
 import LanguageMenu from "./language-menu";
 import SettingsDialog from "./settings-dialog";
@@ -7,6 +7,7 @@ import { Button } from "./ui/button";
 
 export default function Header() {
 	const { theme, setTheme } = useTheme();
+	const isHydrated = useHydrated();
 
 	const toggleTheme = () => {
 		if (theme === "dark") {
@@ -34,7 +35,15 @@ export default function Header() {
 
 					{/* Theme toggler */}
 					<Button size="icon" variant="outline" onClick={toggleTheme}>
-						{theme === "dark" ? <IconSun /> : <IconMoon />}
+						{isHydrated ? (
+							theme === "dark" ? (
+								<IconSun />
+							) : (
+								<IconMoon />
+							)
+						) : (
+							<span aria-hidden className="size-5" />
+						)}
 					</Button>
 				</div>
 			</header>
