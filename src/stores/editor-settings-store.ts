@@ -55,7 +55,7 @@ const useEditorSettingsStore = create<
 			},
 		}),
 		{
-			name: "next-pen-editor-settings",
+			name: "tancode-editor-settings",
 			partialize: (state) => ({
 				theme: validThemeValues.includes(state.theme)
 					? state.theme
