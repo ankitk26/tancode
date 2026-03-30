@@ -1,5 +1,5 @@
 import { IconSettings } from "@tabler/icons-react";
-import { useHotkey } from "@tanstack/react-hotkeys";
+import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys";
 import { useState } from "react";
 import FontSizeInput from "@/components/font-size-input";
 import {
@@ -32,6 +32,7 @@ import {
 } from "@/stores/editor-settings-store";
 import SettingsRow from "./settings-dialog-row";
 import { Button } from "./ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export default function SettingsDialog() {
 	const [open, setIsOpen] = useState(false);
@@ -55,13 +56,22 @@ export default function SettingsDialog() {
 
 	return (
 		<Dialog open={open} onOpenChange={setIsOpen}>
-			<DialogTrigger
-				render={
-					<Button size="icon">
-						<IconSettings />
-					</Button>
-				}
-			/>
+			<Tooltip>
+				<TooltipTrigger
+					render={
+						<DialogTrigger
+							render={
+								<Button size="icon">
+									<IconSettings />
+								</Button>
+							}
+						/>
+					}
+				/>
+				<TooltipContent>
+					Editor settings ({formatForDisplay("Mod+,")})
+				</TooltipContent>
+			</Tooltip>
 			<DialogContent className="flex h-fit min-w-0 flex-col bg-background sm:max-w-150">
 				<DialogHeader>
 					<DialogTitle>Editor Settings</DialogTitle>
