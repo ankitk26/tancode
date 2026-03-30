@@ -80,13 +80,13 @@ const WebD = () => {
 	}, [html, css, js]);
 
 	return (
-		<div className="flex h-full w-full flex-col gap-4 overflow-hidden lg:flex-row">
+		<div className="flex w-full flex-col gap-4 lg:h-full lg:flex-row lg:overflow-hidden">
 			{/* Editors section - top on mobile, left on desktop */}
-			<div className="flex h-[400px] min-w-0 flex-col lg:h-full lg:flex-1">
+			<div className="flex min-h-[400px] min-w-0 flex-col lg:h-full lg:min-h-0 lg:flex-1">
 				{/* Code editor tabs */}
 				<Tabs
 					defaultValue="html"
-					className="flex min-w-0 flex-1 flex-col"
+					className="flex min-w-0 flex-col lg:min-h-0 lg:flex-1"
 				>
 					<TabsList className="h-auto w-full shrink-0 p-1">
 						<TabsTrigger value="html">
@@ -103,10 +103,10 @@ const WebD = () => {
 						</TabsTrigger>
 					</TabsList>
 
-					<div className="min-h-0 flex-1 overflow-hidden">
+					<div className="min-h-[340px] lg:min-h-0 lg:flex-1 lg:overflow-hidden">
 						<TabsContent
 							value="html"
-							className="m-0 h-full overflow-hidden p-0"
+							className="m-0 min-h-[340px] p-0 lg:h-full lg:overflow-hidden"
 						>
 							<Editor
 								language="html"
@@ -116,7 +116,7 @@ const WebD = () => {
 						</TabsContent>
 						<TabsContent
 							value="css"
-							className="m-0 h-full overflow-hidden p-0"
+							className="m-0 min-h-[340px] p-0 lg:h-full lg:overflow-hidden"
 						>
 							<Editor
 								language="css"
@@ -126,7 +126,7 @@ const WebD = () => {
 						</TabsContent>
 						<TabsContent
 							value="javascript"
-							className="m-0 h-full overflow-hidden p-0"
+							className="m-0 min-h-[340px] p-0 lg:h-full lg:overflow-hidden"
 						>
 							<Editor
 								language="nodejs"
@@ -139,12 +139,12 @@ const WebD = () => {
 			</div>
 
 			{/* Preview section - bottom on mobile, right on desktop */}
-			<div className="flex min-w-0 flex-1 flex-col bg-white lg:flex-1">
+			<div className="flex min-h-[400px] min-w-0 flex-col bg-white lg:min-h-0 lg:flex-1">
 				<div className="flex shrink-0 items-center gap-2 border-b border-border bg-muted px-4 py-3">
 					<IconEye className="size-4" />
 					<span className="text-sm font-medium">Preview</span>
 				</div>
-				<div className="min-h-0 flex-1 overflow-hidden bg-white">
+				<div className="h-[500px] bg-white lg:min-h-0 lg:flex-1 lg:overflow-hidden">
 					<iframe
 						title="output"
 						sandbox="allow-scripts"

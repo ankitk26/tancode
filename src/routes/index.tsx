@@ -11,7 +11,7 @@ function Home() {
 	const language = useLanguage();
 
 	return (
-		<div className="h-full">
+		<div className="w-full lg:h-full">
 			{language === "webd" ? <WebD /> : <ProgrammingEditor />}
 		</div>
 	);

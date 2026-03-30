@@ -51,9 +51,9 @@ function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
 					disableTransitionOnChange
 				>
 					<TooltipProvider>
-						<div className="flex h-screen w-full flex-col overflow-hidden">
+						<div className="flex min-h-screen w-full flex-col overflow-x-hidden lg:h-screen lg:overflow-hidden">
 							<Header />
-							<main className="min-h-0 w-full flex-1 overflow-hidden p-4">
+							<main className="w-full flex-1 overflow-visible p-4 lg:min-h-0 lg:overflow-hidden">
 								{children}
 							</main>
 						</div>

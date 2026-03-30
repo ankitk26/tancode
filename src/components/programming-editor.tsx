@@ -82,19 +82,19 @@ export default function ProgrammingEditor() {
 	});
 
 	return (
-		<div className="flex h-full min-h-0 flex-col gap-4 overflow-hidden lg:flex-row">
-			<section className="h-[400px] min-h-0 min-w-0 lg:h-full lg:flex-1">
+		<div className="flex w-full flex-col gap-4 lg:h-full lg:min-h-0 lg:flex-row lg:overflow-hidden">
+			<section className="min-h-[400px] min-w-0 lg:h-full lg:min-h-0 lg:flex-1">
 				<Editor language={language} code={code} setCode={setCode} />
 			</section>
 
-			<div className="flex min-h-0 min-w-0 flex-col gap-4 lg:w-[400px] xl:w-[450px]">
-				<section className="flex min-h-[150px] flex-1 flex-col">
+			<div className="flex min-w-0 flex-col gap-4 lg:min-h-0 lg:w-[400px] xl:w-[450px]">
+				<section className="flex min-h-[150px] flex-col lg:flex-1">
 					<CodeInput />
 				</section>
 
 				<CompileButton onRun={submitCode} isSubmitting={isSubmitting} />
 
-				<section className="flex min-h-[200px] flex-[2] flex-col">
+				<section className="flex min-h-[200px] flex-col lg:flex-[2]">
 					<CodeOutput />
 				</section>
 			</div>
